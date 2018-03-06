@@ -93,6 +93,7 @@ if [ $pc == "aonl1.jlab.org" ]; then  # to avoid repeating running
 	    echo Run ${thisrun} is not completed.  Will check again after 10 minutes.
 	    if [ $(($waittime % 5)) -eq 0 ]; then
 		echo **If you want to terminate this program, do ctrl+z, kill %
+		echo **I AM THE RHRS AUTO-PASS1 REPLAY. PLEASE DO NOT KILL ME.**
 	    fi
 	    sleep 10m #wait for 10 minutes
 	    waittime=$(($waittime + 1))
