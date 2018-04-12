@@ -913,7 +913,7 @@ void OnlineGUI::CreateGUI(const TGWindow *p, UInt_t w, UInt_t h)
   if(!fConfig->IsMonitor()) {
     wile = 
       new TGPictureButton(vframe,
-			  gClient->GetPicture(guiDirectory+"/awe.jpg"));
+			  gClient->GetPicture(guiDirectory+"/config_coinc_2018/src.jpg"));
     wile->Connect("Pressed()","OnlineGUI", this,"DoDraw()");
   } else {
     wile = 
