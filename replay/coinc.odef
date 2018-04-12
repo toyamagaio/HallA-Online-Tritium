@@ -127,7 +127,6 @@ TH2F Rcerfadcvfbus 'Cerenkov Fastbus ADC(PedSub) vs FADC, PMT  ' R.cer.a_p FbusR
 # ------------------------------------------------------------------
 
 # RIGHT ARM Pion Rejector 1,2 (Preshower/Shower):
-#
 #TH1F Rpsa   'PionRejector1 ADCs' R.ps.a 200 10 2000 R.ps.a>0.
 TH1F Rpsa   'Preshower ADCs' R.ps.a 1000 0.5 1000.5 R.ps.a>0.
 TH1F Rpsa_p 'Preshower ADCs (PedSub)' R.ps.a_p 1100 -99.5 1000.5 R.ps.a_p>-50
@@ -199,14 +198,10 @@ TH2F R_tgc  'R-arm tgt phi vs. tgt y' R.tr.tg_y R.tr.tg_ph 200 -0.1 0.1 200 -0.1
 
 #-------------------------------------------------------------------------------
 # RIGHT Arm Physics Histograms:
-#
-TH1F EKRQ2  'R-arm Q2, 4-momentum transfer'  EKR.Q2 200 0 20
-TH1F EKRNU 'R-arm nu, energy transfer'   EKR.omega 400 5 10
-TH1F EKRW  'R-arm invariant mass W' sqrt(EKR.W2) 100 1 4
-TH1F EKR_TH_E 'R-arm scattering angle (deg)' EKR.angle*180./3.14159 180 15 45
-TH1F EKRXBJ 'R-arm Bjorken x' EKR.x_bj 100 0 2
-#TH1F EKRTH_Q 'R-arm Virtual photon angle (deg)' EKR.th_q*180./3.14159 60 0 60
-TH2F EKR_xQ2 'R-arm Q2 vs xbj'  EKR.x_bj EKR.Q2  100 0 2 200 0 20
+TH1F EKRPm    'Pmiss distribution [GeV]'    EKR.pmiss               100 0.00 0.55
+TH1F EKREm    'Emiss distribution [GeV]'    EKR.emiss               100 0.00 0.25
+TH1F EKRThRQ  '#Theta_{rq} [deg]'           EKR.th_bq*180./3.14159  100 0.00 60.0
+TH2F EKR_EmPm 'Emiss [GeV] vs. Pmiss [GeV]' EKR.pmiss EKR.emiss     100 0.00 0.55 100 0.00 0.25
 
 #-------------------------------------------------------------------------------
 # RIGHT Arm Reaction Vertex Histograms  :
@@ -617,27 +612,30 @@ TH2F L_tgc  'L-arm tgt phi vs. y' L.tr.tg_y L.tr.tg_ph 200 -0.1 0.1 200 -0.1 0.1
 #-------------------------------------------------------------------------------
 # LEFT Arm Physics Histograms:
 
-TH1F EKLQ2  'L-arm Q2, 4-momentum transfer'  EKL.Q2 200 1 20
-TH1F EKLNU 'L-arm nu, energy transfer'   EKL.omega 400 7.0 8.0
-TH1F EKLW  'L-arm invariant mass W' sqrt(EKL.W2) 100 1.0 4.0
-TH1F EKL_TH_E 'L-arm scattering angle (deg)' EKL.angle*180./3.14159 180 15 45
-TH1F EKLXBJ 'L-arm Bjorken x' EKL.x_bj 100 0 1
-#TH1F EKLTH_Q 'L-arm Virtual photon angle (deg)' EKL.th_q*180./3.14159 60 0 60
+TH1F EKLQ2    'Q^{2}, 4-momentum transfer [GeV^{2}]'  EKL.Q2                 100 1.20 2.00
+TH1F EKLNU    '#omega, energy transfer [GeV]'         EKL.omega              100 0.55 0.95
+TH1F EKLW     'invariant mass W [GeV]'                sqrt(EKL.W2)           100 1.00 4.00
+TH1F EKL_TH_E 'electron scattering angle (deg)'       EKL.angle*180./3.14159 100 18.0 24.0
+TH1F EKLXBJ   'Bjorken x distribution'                EKL.x_bj               100 0.80 2.00
 
-TH2F EKL_xQ2 'L-arm Q2 vs xbj'  EKL.x_bj EKL.Q2  100 0 1 100 1 20
-#TH2F L_W2Q2  'L-arm Q2 vs W2'       PKL.W2 PKL.Q2    100 0 2 100 0 0.5
-#TH2F L_thqW2 'L-arm W2 vs theta_q'  PKL.th_q PKL.Q2  100 0 2 100 0 0.5
+TH2F EKL_xQ2  'Q^{2} [GeV^{2}] vs. xbj'               EKL.x_bj   EKL.Q2      100 0.80 2.00 100 1.20 2.00
+TH2F EKL_nuQ2 'Q^{2} [GeV^{2}] vs. #omega [GeV]'      EKL.omega  EKL.Q2      100 0.55 0.95 100 1.20 2.00
+
+
+
+#-------------------------------------------------------------------------------
+# Physics plots from both arms
+TH2F ThRQ_Q2 'Q^{2} [GeV^{2}] vs. #Theta_{rq} [deg]' EKR.th_bq*180./3.14159 EKL.Q2   100 0.00 60.0 100 1.20 2.00
+TH2F ThRQ_xB 'xbj vs. #Theta_{rq} [deg]'             EKR.th_bq*180./3.14159 EKL.x_bj 100 0.00 60.0 100 0.80 2.00
 
 #-------------------------------------------------------------------------------
 # LEFT Arm Reaction Vertex Histograms  :
-#
 TH1F L_reactx 'L-arm Reaction X vertex' rpl.x 200 -.1 .1
 TH1F L_reacty 'L-arm Reaction Y vertex' rpl.y 200 -.1 .1
 TH1F L_reactz 'L-arm Reaction Z vertex' rpl.z 200 -.15 .15
 
 #-------------------------------------------------------------------------------
 #Beam Information
-#
 TH1F L_bpma_x 'BPMA x [mm]' rbax 4000 -15. 15.
 TH1F L_bpma_y 'BPMA y [mm]' rbay 4000 -15. 15.
 TH1F L_bpmb_x 'BPMB x [mm]' rbbx 4000 -15. 15.
@@ -645,11 +643,9 @@ TH1F L_bpmb_y 'BPMB y [mm]' rbby 4000 -15. 15.
 TH1F L_beam_rasterx 'x at target (from Rasters) [mm]' rbx 4000  -15. 15.
 TH1F L_beam_rastery 'y at target (from Rasters) [mm]' rby 4000  -15. 15.
 
-
 TH2F L_bpma_xy 'BPMA y vs x'  rbax rbay 2000 -15. 15. 2000 -15. 15.
 TH2F L_bpmb_xy 'BPMB y vs x'  rbbx rbby 2000 -15. 15. 2000 -15. 15.
 TH2F L_beam_rasterxy 'Beam at target y vs x (from Rasters)'  rbx rby 800 -15. 15.  800 -15. 15.
-
 
 #Note that rawcur1.y refers to the current for the magnetic field in the y-direction (but electron deflection in x-direction!!!)
 #This was changed back to the standard definitions by Barak in July 2015 (avoids off-diagonal terms in Raster current-to-position matrix)
