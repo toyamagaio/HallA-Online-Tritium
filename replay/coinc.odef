@@ -11,7 +11,7 @@ block FbusR.s0.*
 block FbusR.cer.*
 
 block DR.*
-block OldTrackR.*
+#block OldTrackR.*
 
 # F1tdc and VETROC
 variable F1nhits
@@ -200,7 +200,7 @@ TH2F R_tgc  'R-arm tgt phi vs. tgt y' R.tr.tg_y R.tr.tg_ph 200 -0.1 0.1 200 -0.1
 # RIGHT Arm Physics Histograms:
 TH1F EKRPm    'Pmiss distribution [GeV]'    EKR.pmiss               100 0.00 0.55
 TH1F EKREm    'Emiss distribution [GeV]'    EKR.emiss               100 0.00 0.25
-TH1F EKRThRQ  '#Theta_{rq} [deg]'           EKR.th_bq*180./3.14159  100 0.00 60.0
+TH1F EKRThRQ  'Theta_{rq} [deg]'            EKR.th_bq*180./3.14159  100 0.00 60.0
 TH2F EKR_EmPm 'Emiss [GeV] vs. Pmiss [GeV]' EKR.pmiss EKR.emiss     100 0.00 0.55 100 0.00 0.25
 
 #-------------------------------------------------------------------------------
@@ -419,17 +419,10 @@ block FbusL.s0.*
 block FbusL.cer.*
 
 block DL.*
-block OldTrackL.*
+#block OldTrackL.*
 
 # F1 tdc
-variable F1FirstHit
-variable F1nhits
-variable F1Warnings
 variable F1AllHits_033
-
-# V1495 Clock Count
-variable V1495ClockCount
-variable V1495ClockInterval
 
 # Physics variables
 block L.gold.*
@@ -612,21 +605,21 @@ TH2F L_tgc  'L-arm tgt phi vs. y' L.tr.tg_y L.tr.tg_ph 200 -0.1 0.1 200 -0.1 0.1
 #-------------------------------------------------------------------------------
 # LEFT Arm Physics Histograms:
 
-TH1F EKLQ2    'Q^{2}, 4-momentum transfer [GeV^{2}]'  EKL.Q2                 100 1.20 2.00
-TH1F EKLNU    '#omega, energy transfer [GeV]'         EKL.omega              100 0.55 0.95
-TH1F EKLW     'invariant mass W [GeV]'                sqrt(EKL.W2)           100 1.00 4.00
-TH1F EKL_TH_E 'electron scattering angle (deg)'       EKL.angle*180./3.14159 100 18.0 24.0
-TH1F EKLXBJ   'Bjorken x distribution'                EKL.x_bj               100 0.80 2.00
+TH1F EKLQ2 'Q2, 4-momentum transfer [GeV2]' EKL.Q2 100 1.20 2.00
+TH1F EKLNU 'Nu, energy transfer [GeV]' EKL.omega 100 0.55 0.95
+TH1F EKLW  'invariant mass W [GeV]' sqrt(EKL.W2) 100 1.00 4.00
+TH1F EKL_TH_E 'electron scattering angle (deg)' EKL.angle*180./3.14159 100 18.0 24.0
+TH1F EKLXBJ 'Bjorken x distribution' EKL.x_bj 100 0.80 2.00
 
-TH2F EKL_xQ2  'Q^{2} [GeV^{2}] vs. xbj'               EKL.x_bj   EKL.Q2      100 0.80 2.00 100 1.20 2.00
-TH2F EKL_nuQ2 'Q^{2} [GeV^{2}] vs. #omega [GeV]'      EKL.omega  EKL.Q2      100 0.55 0.95 100 1.20 2.00
+TH2F EKL_xQ2  'Q2 [GeV2] vs. xbj'               EKL.x_bj   EKL.Q2      100 0.80 2.00 100 1.20 2.00
+TH2F EKL_nuQ2 'Q2 [GeV2] vs. Nu [GeV]'      EKL.omega  EKL.Q2      100 0.55 0.95 100 1.20 2.00
 
 
 
 #-------------------------------------------------------------------------------
 # Physics plots from both arms
-TH2F ThRQ_Q2 'Q^{2} [GeV^{2}] vs. #Theta_{rq} [deg]' EKR.th_bq*180./3.14159 EKL.Q2   100 0.00 60.0 100 1.20 2.00
-TH2F ThRQ_xB 'xbj vs. #Theta_{rq} [deg]'             EKR.th_bq*180./3.14159 EKL.x_bj 100 0.00 60.0 100 0.80 2.00
+TH2F ThRQ_Q2 'Q2 [GeV2] vs. Theta_rq [deg]' EKR.th_bq*180./3.14159 EKL.Q2   100 0.00 60.0 100 1.20 2.00
+TH2F ThRQ_xB 'xbj vs. Theta_rq [deg]'       EKR.th_bq*180./3.14159 EKL.x_bj 100 0.00 60.0 100 0.80 2.00
 
 #-------------------------------------------------------------------------------
 # LEFT Arm Reaction Vertex Histograms  :
@@ -825,12 +818,14 @@ variable evLeftd10_r
 
 # ===========================================================
 # Triggers - Added by Reynier Cruz Torres on April 2018
+formula T4minT1 DR.rrawt7-DR.rrawt1
+
 TH1F T1_R_rrawt1 'T1 on RHRS = rrawt1, no prescale' DR.rrawt1 500 1500 2500
 TH1F T2_R_rrawt2 'T2 on RHRS = rrawt2, no prescale' DR.rrawt2 500 1500 2500
 TH1F T3_R_rrawt3 'T3 on RHRS = rrawt3, no prescale' DR.rrawt3 500 1500 2500
 TH1F S0_TDC_diffLR 'LHRS-RHRS S0 mean TDC difference' (L.s0.lt[0]+L.s0.rt[0])/2.-(R.s0.lt[0]+R.s0.rt[0])/2. 500 -2000 2000
 TH1F T4_R_rrawt7 'T4 spectrum (S0&S2)_R' DR.rrawt7 500 0 4000
-TH1F T4_min_T1   'T4 - T1 spectrum' DR.rrawt7 - DR.rrawt1 500 -1000 1000
+TH1F T4_min_T1 'T4 minus T1 spectrum' T4minT1 500 -1000 1000
 TH1F C1_R_rrawt4 'C1 on RHRS = rrawt4, no prescale' DR.rrawt4 500 0 4000
 TH1F C2_R_rrawt5 'C2 on RHRS = rrawt5, no prescale' DR.rrawt5 500 0 4000
 TH1F C3_R_rrawt6 'C3 on RHRS = rrawt6, no prescale' DR.rrawt6 500 0 4000

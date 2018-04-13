@@ -112,7 +112,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		gHaEvtHandlers->Add (new TdcDataEvtHandler("LTDC","F1 TDCs lHRS")); // do not change the "LTDC" word
 		// Evan - V1495 Clock Counter:
 		gHaEvtHandlers->Add (new ClockCountEvtHandler("LV1495","V1495 LHRS"));
-		
+
 		//==================================
 		// RHRS Scalers
 		//==================================
@@ -147,7 +147,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 	if(bBeam){	
 
 		THaIdealBeam* ib = new THaIdealBeam("ib","Ideal beam");
-                gHaApps->Add(ib);
+		gHaApps->Add(ib);
 
 		//==================================
 		// LHRS Beam
@@ -161,7 +161,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		FbusLrb->AddDetector(new THaBPM   ("BPMA", "First BPM"));
 		FbusLrb->AddDetector(new THaBPM   ("BPMB", "Second BPM"));
 		gHaApps->Add(FbusLrb);
-		
+
 		//==================================
 		// RHRS Beam
 		//==================================	
@@ -290,12 +290,12 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		//==================================
 		// LHRS
 		//==================================
- 		const char * config_online_L = Form( REPLAY_DIR_PREFIX,"onlineGUI64/config_coinc_2018/LHRS_online.cfg");
+		const char * config_online_L = Form( REPLAY_DIR_PREFIX,"onlineGUI64/config_coinc_2018/LHRS_online.cfg");
 
 		gSystem->Exec(Form("%sonline -P -f %s -r %d"                                   ,GUI_DIR      ,config_online_L ,runnumber              ));
-                gSystem->Exec(Form("mv %stemp_%d.pdf %sleft_online_%d.pdf"                     ,SUM_DIR      ,runnumber       ,path_to_plots,runnumber));
-                gSystem->Exec(Form("unlink %sleft_online_latest.pdf"                           ,SUM_DIR                                               ));
-                gSystem->Exec(Form("ln -s %sleft_online_%d.pdf %sleft_online_latest.pdf"       ,path_to_plots,runnumber       ,SUM_DIR                ));
+		gSystem->Exec(Form("mv %stemp_%d.pdf %sleft_online_%d.pdf"                     ,SUM_DIR      ,runnumber       ,path_to_plots,runnumber));
+		gSystem->Exec(Form("unlink %sleft_online_latest.pdf"                           ,SUM_DIR                                               ));
+		gSystem->Exec(Form("ln -s %sleft_online_%d.pdf %sleft_online_latest.pdf"       ,path_to_plots,runnumber       ,SUM_DIR                ));
 
 		//==================================
 		// RHRS
@@ -303,9 +303,9 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		const char * config_online_R = Form( REPLAY_DIR_PREFIX,"onlineGUI64/config_coinc_2018/RHRS_online.cfg");
 
 		gSystem->Exec(Form("%sonline -P -f %s -r %d"                                     ,GUI_DIR      ,config_online_R ,runnumber              ));
-                gSystem->Exec(Form("mv %stemp_%d.pdf %sright_online_%d.pdf"                      ,SUM_DIR      ,runnumber       ,path_to_plots,runnumber));
-                gSystem->Exec(Form("unlink %sright_online_latest.pdf"                            ,SUM_DIR                                               ));
-                gSystem->Exec(Form("ln -s %sright_online_%d.pdf %sright_online_latest.pdf"       ,path_to_plots,runnumber       ,SUM_DIR                ));
+		gSystem->Exec(Form("mv %stemp_%d.pdf %sright_online_%d.pdf"                      ,SUM_DIR      ,runnumber       ,path_to_plots,runnumber));
+		gSystem->Exec(Form("unlink %sright_online_latest.pdf"                            ,SUM_DIR                                               ));
+		gSystem->Exec(Form("ln -s %sright_online_%d.pdf %sright_online_latest.pdf"       ,path_to_plots,runnumber       ,SUM_DIR                ));
 
 		//==================================
 		// Both arms combined
@@ -320,10 +320,10 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		gSystem->Exec(Form("ln -sf %scoinc_%d.pdf %scoinc_latest.pdf"                    ,path_to_plots,runnumber       ,path_to_plots          ));
 
 		gSystem->Exec(Form("%sonline -P -f %s -r %d"                                     ,GUI_DIR      ,CONFIGCOINCPHYS ,runnumber            ));
-                gSystem->Exec(Form("mv %stemp_%d.pdf %scoinc_physics_%d.pdf"                     ,SUM_DIR      ,runnumber       ,path_to_plots,runnumber));
-                gSystem->Exec(Form("unlink %scoinc_physics_latest.pdf"                           ,SUM_DIR                                               ));
-                gSystem->Exec(Form("ln -s %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"     ,path_to_plots,runnumber       ,SUM_DIR                ));    
-                gSystem->Exec(Form("ln -sf %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"    ,path_to_plots,runnumber       ,path_to_plots          ));
+		gSystem->Exec(Form("mv %stemp_%d.pdf %scoinc_physics_%d.pdf"                     ,SUM_DIR      ,runnumber       ,path_to_plots,runnumber));
+		gSystem->Exec(Form("unlink %scoinc_physics_latest.pdf"                           ,SUM_DIR                                               ));
+		gSystem->Exec(Form("ln -s %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"     ,path_to_plots,runnumber       ,SUM_DIR                ));    
+		gSystem->Exec(Form("ln -sf %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"    ,path_to_plots,runnumber       ,path_to_plots          ));
 	}
 
 	exit(0);

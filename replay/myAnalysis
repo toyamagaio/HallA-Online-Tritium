@@ -6,4 +6,4 @@ else
 	RUNNUM=$1
 fi
 
-./haonline_tool -r $RUNNUM -o -y
+./haonline_tool_coinc -r $RUNNUM -a -y
