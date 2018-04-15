@@ -4,10 +4,27 @@
 # See THaDecData.C for documentation.
 DL.word =
 # syncclock
-          syncroc1   3    fabc0008   4
-          syncroc2   4    fabc0008   4
-          syncroc3   5    fabc0008   4
-          syncroc4   11    cafe0000   11
+          syncroc1   1    fabc0008   8
+          syncroc2   2    fabc0008   8
+          syncroc3   3    fabc0008   8
+          syncroc4   4    fabc0008   8
+          syncroc5   5    fabc0008   8
+          syncroc6   6    fabc0008   8
+
+# syncclock
+          syncevt1   1    fabc0008   4
+          syncevt2   2    fabc0008   4
+          syncevt3   3    fabc0008   4
+          syncevt4   4    fabc0008   4
+          syncevt5   5    fabc0008   4
+          syncevt6   6    fabc0008   4
+
+#fadc trigger time
+#      	  fadctime1L  31  3
+#          fadctime2L  31  4
+#      	  fadctime1R  20  3
+#          fadctime2R  20  4
+
           # On-Board Trigger Supervisor Bits
 		scalLive1        11    fed00017   20
 		scalLive2        11    fed00017   21

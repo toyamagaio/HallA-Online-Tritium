@@ -5,10 +5,30 @@
 
 DR.word =
 # syncclock
-          syncroc1   5    fabc0009   5
-          syncroc2   8    fabc0008   4
-          syncroc3   9    fabc0008   4
-          syncroc4   10    fabc0008   4
+          syncroc1   1    fabc0008   8
+          syncroc2   2    fabc0008   8
+          syncroc3   3    fabc0008   8
+          syncroc4   4    fabc0008   8
+          syncroc5   5    fabc0008   8
+          syncroc6   6    fabc0008   8
+	  syncroc31  31   0x14951495 1
+          syncroc20  20   0x14951495 1
+
+# syncclock
+          syncevt1   1    fabc0008   4
+          syncevt2   2    fabc0008   4
+          syncevt3   3    fabc0008   4
+          syncevt4   4    fabc0008   4
+          syncevt5   5    fabc0008   4
+          syncevt6   6    fabc0008   4
+
+
+#fadc trigger time
+#      	  fadctime1L  31  3
+#          fadctime2L  31  4
+#      	  fadctime1R  20  3
+#          fadctime2R  20  4
+
 # Deadtime Calculations
           R1start	1	0xdeaddead	1
           R1stop	1	0xdeaddead	2
