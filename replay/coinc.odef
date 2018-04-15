@@ -179,11 +179,11 @@ TH2F R_tfpb 'R-arm FP Transport theta vs. phi' R.tr.ph R.tr.th 200 -.075 .075 20
 TH2F R_tfpc 'R-arm FP Rotated x vs. y' R.tr.r_y R.tr.r_x 200 -.2 .2 200 -1.5 1.5
 TH2F R_tfpd 'R-arm FP Rotated theta vs. phi' R.tr.r_ph R.tr.r_th 200 -.075 .075 200 -.2 .2 
 
-TH1F R_dp 'R-arm delta' R.tr.tg_dp 200 -.1 .1 R.cer.asum_c>2000&&R.tr.n==1&&(R.ps.e+R.sh.e)/(R.gold.p*1000)>0.7
-TH1F R_tgth 'R-arm target theta' R.tr.tg_th 200 -.2 .2 R.cer.asum_c>2000&&R.tr.n==1&&(R.ps.e+R.sh.e)/(R.gold.p*1000)>0.7
-TH1F R_tgph 'R-arm target phi' R.tr.tg_ph 200 -.1 .1 R.cer.asum_c>2000&&R.tr.n==1&&(R.ps.e+R.sh.e)/(R.gold.p*1000)>0.7
-TH1F R_tgy 'R-arm target y' R.tr.tg_y 200 -.1 .1 R.cer.asum_c>2000&&(R.ps.e+R.sh.e)/(R.gold.p*1000)>0.7
-TH1F R_trvz 'R-arm vertex z' R.tr.vz 200 -0.2 0.2 R.cer.asum_c>2000&&(R.ps.e+R.sh.e)/(R.gold.p*1000)>0.7
+TH1F R_dp 'R-arm delta' R.tr.tg_dp 200 -.1 .1 
+TH1F R_tgth 'R-arm target theta' R.tr.tg_th 200 -.2 .2 
+TH1F R_tgph 'R-arm target phi' R.tr.tg_ph 200 -.1 .1 
+TH1F R_tgy 'R-arm target y' R.tr.tg_y 200 -.1 .1 
+TH1F R_trvz 'R-arm vertex z' R.tr.vz 200 -0.2 0.2 
 
 TH1F Rtrn_ep  'R-arm number of tracks with ep cut' R.tr.n 20 -0.5 10.5 (R.ps.e+R.sh.e)/(R.gold.p*1000)>0.7
 TH1F Rtrn_cer  'L-arm number of tracks with cer cut' R.tr.n 20 -0.5 10.5 R.cer.asum_c>2000
