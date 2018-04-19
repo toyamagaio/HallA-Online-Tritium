@@ -841,13 +841,14 @@ variable evLeftd10_r
 
 # ===========================================================
 # Triggers - Added by Reynier Cruz Torres on April 2018
+FORMULA T4minT1 DR.rrawt7-DR.rrawt4
 
 TH1F T1_R_rrawt1 'T1 on RHRS = rrawt1, no prescale' DR.rrawt1 60 1620 1680
 TH1F T2_R_rrawt2 'T2 on RHRS = rrawt2, no prescale' DR.rrawt2 60 1620 1680
 TH1F T3_R_rrawt3 'T3 on RHRS = rrawt3, no prescale' DR.rrawt3 120 1560 1680
 TH1F S0_TDC_diffLR 'LHRS-RHRS S0 mean TDC difference' (L.s0.lt[0]+L.s0.rt[0])/2.-(R.s0.lt[0]+R.s0.rt[0])/2. 500 220 420
 TH1F T4_R_rrawt7 'T4 spectrum (S0&S2)_R' DR.rrawt7 500 1600 1700
-TH1F T4_min_T1 'T4 minus T1 spectrum' (DR.rrawt7-DR.rrawt1) 300 -150 150
+TH1F T4_min_T1 'T4 minus T1 spectrum' T4minT1 300 -150 150
 TH1F C1_R_rrawt4 'C1 on RHRS = rrawt4, no prescale' DR.rrawt4 50 1580 1630
 TH1F C2_R_rrawt5 'C2 on RHRS = rrawt5, no prescale' DR.rrawt5 50 1580 1630
 TH1F C3_R_rrawt6 'C3 on RHRS = rrawt6, no prescale' DR.rrawt6 50 1580 1630
