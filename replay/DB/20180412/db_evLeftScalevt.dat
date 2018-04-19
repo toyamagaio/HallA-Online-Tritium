@@ -24,7 +24,7 @@ variable 1 2  2  T3_r  LHRS T3 trigger rate
 variable 1 3  1  MLU_random  MLU random clock
 variable 1 3  2  MLU_random_r MLU random clock
 variable 1 4  1  FakeCoinc  Fake Coinc from EDTM
-variable 1 4  2  FakeCoinc  Fake Coinc from EDTM
+variable 1 4  2  FakeCoinc_r  Fake Coinc from EDTM
 variable 1 5  1  L1A_R    L1A remote from RHRS
 variable 1 5  2  L1A_R_r  L1A remote from RHRS rate
 variable 1 6  1  Rclock    RHRS clock
