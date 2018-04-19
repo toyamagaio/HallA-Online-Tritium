@@ -84,7 +84,7 @@ S2L             0   8     1     10    1      LHRS S2L signal
 S2R             0   8     1     11    1      LHRS S2R signal
 (S0||S2)R       0   8     1     12    1      Retiming signal from RHRS
 ADC_gate        0   8     1     13    1      
-L1A_Rcopy       0   8     1     14    1      LHRS L1A
+L1A_copy        0   8     1     14    1      LHRS L1A
 RF_Time         0   8     1     15    1
 L1A             0   8     1     16    1      L1A directly from TS2 output.
 unew            0   8     1     18    1      
