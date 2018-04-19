@@ -39,7 +39,7 @@ block EKRx.*
 #block EltR.*
 #block EKRxe.*
 
-
+block ib.*
 #BPM/Raster Variables
 FORMULA rbax 1000.*Rrb.BPMA.x
 FORMULA rbay 1000.*Rrb.BPMA.y
@@ -272,18 +272,18 @@ variable RightT3
 variable RightT3_r
 variable RightT4
 variable RightT4_r
-variable RightT5
-variable RightT5_r
-variable RightT6
-variable RightT6_r
+variable RightC1
+variable RightC1_r
+variable RightC2
+variable RightC2_r
+variable RightC3
+variable RightC3_r
 variable RightRclock
 variable RightRclock_r
 variable RightLclock
 variable RightLclock_r
 variable RightL1A_R
 variable RightL1A_R_r
-variable RightRclock2
-variable RightRclock2_r
 variable Rights2L
 variable Rights2L_r
 variable Rights2R
@@ -320,18 +320,18 @@ variable evRightT3
 variable evRightT3_r
 variable evRightT4
 variable evRightT4_r
-variable evRightT5
-variable evRightT5_r
-variable evRightT6
-variable evRightT6_r
+variable evRightC1
+variable evRightC1_r
+variable evRightC2
+variable evRightC2_r
+variable evRightC3
+variable evRightC3_r
 variable evRightRclock
 variable evRightRclock_r
 variable evRightLclock
 variable evRightLclock_r
 variable evRightL1A_R
 variable evRightL1A_R_r
-variable evRightRclock2
-variable evRightRclock2_r
 variable evRights2L
 variable evRights2L_r
 variable evRights2R
@@ -490,12 +490,12 @@ block FbusLrb*
 formula Lep (L.prl1.e+L.prl2.e)/(L.gold.p*1000)
 # LEFT ARM S0
 
-TH1F Ls0lt 'S0-Bottom(B) TDC' L.s0.lt 500 2600 2900 L.s0.lt>0.
-TH1F Ls0rt 'S0-Top(A) TDC' L.s0.rt 500 2600 2900 L.s0.rt>0.
-TH1F Ls0ltTAll 'S0-Bottom(B) TDC w/T2,T3' L.s0.lt 500 1300 2300 L.s0.lt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
-TH1F Ls0ltT3   'S0-Bottom(B) TDC w/ T3 only' L.s0.lt 500 1300 2300 L.s0.lt>0.&&(DL.evtypebits==8)
-TH1F Ls0rtTAll 'S0-Top(A) TDC w/ T2,T3' L.s0.rt 500 1300 2300 L.s0.rt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
-TH1F Ls0rtT3   'S0-Top(A) TDC w/ T3 only' L.s0.rt 500 1300 2300 L.s0.rt>0.&&(DL.evtypebits==8)
+TH1F Ls0lt 'S0-Bottom(B) TDC' L.s0.lt 400 2600 2900 L.s0.lt>0.
+TH1F Ls0rt 'S0-Top(A) TDC' L.s0.rt 400 2600 2900 L.s0.rt>0.
+TH1F Ls0ltTAll 'S0-Bottom(B) TDC w/T2,T3' L.s0.lt 400 2600 2900 L.s0.lt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
+TH1F Ls0ltT3   'S0-Bottom(B) TDC w/ T3 only' L.s0.lt 400 2600 2900 L.s0.lt>0.&&(DL.evtypebits==8)
+TH1F Ls0rtTAll 'S0-Top(A) TDC w/ T2,T3' L.s0.rt 500 2600 2900 L.s0.rt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
+TH1F Ls0rtT3   'S0-Top(A) TDC w/ T3 only' L.s0.rt 500 2600 2900 L.s0.rt>0.&&(DL.evtypebits==8)
 
 TH1F Ls0la 'S0-Bottom(B) ADC' L.s0.la 12000 0 120000 L.s0.la>0.
 TH1F Ls0ra 'S0-Top(A) ADC' L.s0.ra 12000 0 120000 L.s0.ra>0.
@@ -509,8 +509,8 @@ TH2F Ls0Bfadcvfbus 'S0-Bottom(B) Fastbus(PedSub) vs FADC' L.s0.ra_p FbusL.s0.ra_
 # LEFT ARM S2
 #
 
-TH1F Ls2lt 'S2 TDC L-PMT ' L.s2.lt 500 2600 2900 L.s2.lt>0.
-TH1F Ls2rt 'S2 TDC R-PMT ' L.s2.rt 500 2600 2900 L.s2.rt>0.
+TH1F Ls2lt 'S2 TDC L-PMT ' L.s2.lt 400 2600 2900 L.s2.lt>0.
+TH1F Ls2rt 'S2 TDC R-PMT ' L.s2.rt 400 2600 2900 L.s2.rt>0.
 TH1F Ls2ltTAll_ 'S2 TDC w/ T2,T3: L-PMT ' L.s2.lt 500 1300 2300 L.s2.lt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
 TH1F Ls2ltT3_ 'S2 TDC w/ T3 only: L-PMT' L.s2.lt 500 1300 2300 L.s2.lt>0.&&(DL.evtypebits==8)
 TH1F Ls2rtTAll_ 'S2 TDC w/ T2,T3: R-PMT' L.s2.rt 500 1300 2300 L.s2.rt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
@@ -527,7 +527,7 @@ TH1F Ls2ra_p 'S2 ADC(PedSub) R-PMT ' L.s2.ra_p 1000 -200 1800 L.s2.ra_p>-6000.
 # LEFT ARM GAS CHERENKOV  ADC and TDC :
 
 
-TH1F Lcert   'Cerenkov TDC PMT ' L.cer.t 500 2600 2900 L.cer.t>0
+TH1F Lcert   'Cerenkov TDC PMT ' L.cer.t 400 2600 2900 L.cer.t>0
 TH1F LcertTAll_    'Cerenkov TDC w/ T2,T3: PMT ' L.cer.t 500 0 2500 L.cer.t>0&&((DL.evtypebits==12)||(DL.evtypebits==14))
 TH1F LcertT3_      'Cerenkov TDC w/ T6 only: PMT ' L.cer.t 500 0 2500 L.cer.t>0&&(DL.evtypebits==8)
 
@@ -561,10 +561,10 @@ TH2F Lp2sumy 'Pion Rejector2 sum vs. y' L.prl2.try L.prl2.asum_c 200 -0.2 0.2 20
 # LEFT ARM VDC wires and timing  :
 
 
-TH1F Lvu1t 'L-arm VDC u1 time' L.vdc.u1.rawtime 300 1500 3500
-TH1F Lvu2t 'L-arm VDC u2 time' L.vdc.u2.rawtime 300 1500 3500
-TH1F Lvv1t 'L-arm VDC v1 time' L.vdc.v1.rawtime 300 1500 3500
-TH1F Lvv2t 'L-arm VDC v2 time' L.vdc.v2.rawtime 300 1500 3500
+TH1F Lvu1t 'L-arm VDC u1 time' L.vdc.u1.rawtime 500 1500 3500
+TH1F Lvu2t 'L-arm VDC u2 time' L.vdc.u2.rawtime 500 1500 3500
+TH1F Lvv1t 'L-arm VDC v1 time' L.vdc.v1.rawtime 500 1500 3500
+TH1F Lvv2t 'L-arm VDC v2 time' L.vdc.v2.rawtime 500 1500 3500
 
 TH1F Lvu1w 'L-arm VDC u1 wires' L.vdc.u1.wire 400 0 400
 TH1F Lvu2w 'L-arm VDC u2 wires' L.vdc.u2.wire 400 0 400
@@ -700,7 +700,10 @@ variable LeftT2
 variable LeftT2_r  
 variable LeftT3
 variable LeftT3_r  
-
+variable LeftMLU_random
+variable LeftMLU_random_r
+variable LeftFakeCoinc
+variable LeftFakeCoinc_r
 variable LeftL1A_R
 variable LeftL1A_R_r  
 variable LeftRclock
@@ -719,6 +722,10 @@ variable LeftADC_gate
 variable LeftADC_gate_r
 variable LeftL1A
 variable LeftL1A_r
+variable LeftRF_time
+variable LeftRF_time_r
+variable LeftL1A1
+variable LeftL1A1_r
 variable Leftunew
 variable Leftunew_r
 variable Leftdnew
@@ -740,7 +747,10 @@ variable evLeftT2
 variable evLeftT2_r
 variable evLeftT3
 variable evLeftT3_r
-
+variable evLeftMLU_random
+variable evLeftMLU_random_r
+variable evLeftFakeCoinc
+variable evLeftFakeCoinc_r
 variable evLeftL1A_R
 variable evLeftL1A_R_r
 variable evLeftRclock
@@ -759,6 +769,10 @@ variable evLeftADC_gate
 variable evLeftADC_gate_r
 variable evLeftL1A
 variable evLeftL1A_r
+variable evLeftRF_time
+variable evLeftRF_time_r
+variable evLeftL1A1
+variable evLeftL1A1_r
 variable evLeftunew
 variable evLeftunew_r
 variable evLeftdnew
@@ -827,11 +841,11 @@ variable evLeftd10_r
 
 # ===========================================================
 # Triggers - Added by Reynier Cruz Torres on April 2018
-formula T4minT1 DR.rrawt7-DR.rrawt1
+formula T4minT1 DR.rrawt7[0]-DR.rrawt1[0]
 
-TH1F T1_R_rrawt1 'T1 on RHRS = rrawt1, no prescale' DR.rrawt1 500 1620 1680
-TH1F T2_R_rrawt2 'T2 on RHRS = rrawt2, no prescale' DR.rrawt2 500 1620 1680
-TH1F T3_R_rrawt3 'T3 on RHRS = rrawt3, no prescale' DR.rrawt3 500 1560 1680
+TH1F T1_R_rrawt1 'T1 on RHRS = rrawt1, no prescale' DR.rrawt1 60 1620 1680
+TH1F T2_R_rrawt2 'T2 on RHRS = rrawt2, no prescale' DR.rrawt2 60 1620 1680
+TH1F T3_R_rrawt3 'T3 on RHRS = rrawt3, no prescale' DR.rrawt3 120 1560 1680
 TH1F S0_TDC_diffLR 'LHRS-RHRS S0 mean TDC difference' (L.s0.lt[0]+L.s0.rt[0])/2.-(R.s0.lt[0]+R.s0.rt[0])/2. 500 220 420
 TH1F T4_R_rrawt7 'T4 spectrum (S0&S2)_R' DR.rrawt7 500 1600 1700
 TH1F T4_min_T1 'T4 minus T1 spectrum' T4minT1 500 -50 50
