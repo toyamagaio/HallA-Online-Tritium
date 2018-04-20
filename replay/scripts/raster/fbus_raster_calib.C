@@ -11,7 +11,7 @@
 
 #include "TString.h"
 
-void fbus_raster_calib(){
+void fbus_raster_calib(int arm_arg=0){
 
   Int_t run = 0;
   cout << "What run number would you like to calibrate with?    ";
@@ -50,9 +50,9 @@ void fbus_raster_calib(){
   //rootfile->GetObject("T",T);
   
   TString arm;
-  if(RIGHT_ARM_CONDITION){
+  if((RIGHT_ARM_CONDITION&&arm_arg==0)||arm_arg==1){
     arm="FbusRrb";
-  }else if(LEFT_ARM_CONDITION){
+  }else if((LEFT_ARM_CONDITION&&arm_arg==0)||arm_arg==2){
     arm="FbusLrb";
   }
 
@@ -91,7 +91,16 @@ void fbus_raster_calib(){
   }else if(LEFT_ARM_CONDITION){
     cut += "Left";
   }
-  cut += "dnew_r*0.0003299)>20)";
+  cut += "dnew_r*0.0003299)>19)";
+  cut += "&&((ev";
+  if(RIGHT_ARM_CONDITION){
+    cut += "Right";
+  }else if(LEFT_ARM_CONDITION){
+    cut += "Left";
+  }
+  cut += "dnew_r*0.0003299)<21)";
+  cut += "&&(DR.evtypebits>>8&1)";
+
   TCut beamcut = cut.Data();
 
   //The plots are added to a canvas as they are populated
