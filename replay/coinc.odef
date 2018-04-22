@@ -80,8 +80,8 @@ Variable FbusRrb.e
 formula Rep (R.ps.e+R.sh.e)/(R.gold.p*1000)
 # RIGHT ARM S0
 #
-TH1F Rs0lt 'Right arm S0-Top(B) TDC'    R.s0.lt 180 2240 2430 R.s0.lt>0.
-TH1F Rs0rt 'Right arm S0-Bottom(A) TDC' R.s0.rt 180 2240 2430 R.s0.rt>0.
+TH1F Rs0lt 'Right arm S0-Top(B) TDC'    R.s0.lt 200 2240 2440 R.s0.lt>0.
+TH1F Rs0rt 'Right arm S0-Bottom(A) TDC' R.s0.rt 200 2240 2440 R.s0.rt>0.
 TH1F Rs0ltT4_ 'S0-Top(B) TDC w/ T5,T6 ' R.s0.lt 100 1500 2500 R.s0.lt>0.&&((DR.evtypebits==112)||(DR.evtypebits==96))
 TH1F Rs0ltT6_ 'S0-Top(B) w/ T6 only ' R.s0.lt 500 1500 2500 R.s0.lt>0.&&(DR.evtypebits==64)
 TH1F Rs0rtT4_ 'S0-Bottom(A) w/T5,T6' R.s0.rt 500 1500 2500 R.s0.rt>0.&&((DR.evtypebits==112)||(DR.evtypebits==96))
