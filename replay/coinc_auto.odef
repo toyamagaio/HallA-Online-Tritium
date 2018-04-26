@@ -14,17 +14,19 @@ block DR.*
 #block OldTrackR.*
 
 # F1tdc and VETROC
-variable F1nhits
-variable F1Warnings
-variable F1FirstHit
-variable F1AllHits_014
-variable vfnhits
-variable vfFirstHit
-variable vfAllHits_126
+block RTDC.*
+#variable F1nhits
+#variable F1Warnings
+#variable F1FirstHit
+#variable F1AllHits_014
+#variable vfnhits
+#variable vfFirstHit
+#variable vfAllHits_126
 
-# V1495 Clock Count
-variable V1495ClockCount
-variable V1495ClockInterval
+# Right V1495 Clock Count
+block RV1495.*
+#variable V1495ClockCount
+#variable V1495ClockInterval
 
 # Physics variables
 block RightBCM*
@@ -432,7 +434,11 @@ block DL.*
 #block OldTrackL.*
 
 # F1 tdc
-variable F1AllHits_033
+block LTDC.*
+#variable F1AllHits_033
+
+#Left V1495 Clock count
+block LV1495.*
 
 # Physics variables
 block L.gold.*
