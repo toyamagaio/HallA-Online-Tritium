@@ -111,7 +111,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		// Marco - for F1 tdc:
 		gHaEvtHandlers->Add (new TdcDataEvtHandler("LTDC","F1 TDCs lHRS")); // do not change the "LTDC" word
 		// Evan - V1495 Clock Counter:
-		gHaEvtHandlers->Add (new ClockCountEvtHandler("LV1495","V1495 LHRS"));
+		gHaEvtHandlers->Add (new ClockCountEvtHandler("LV1495","V1495 LHRS"));// do not change the "LV1495" word
 
 		//==================================
 		// RHRS Scalers
@@ -127,7 +127,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		// Marco - F1 and VETROC tdcs:
 		gHaEvtHandlers->Add (new TdcDataEvtHandler("RTDC","F1 and VETROC TDCs rHRS")); // do not change the "RTDC" word
 		// Evan - V1495 Clock Counter:
-		gHaEvtHandlers->Add (new ClockCountEvtHandler("RV1495","V1495 RHRS"));
+		gHaEvtHandlers->Add (new ClockCountEvtHandler("RV1495","V1495 RHRS")); //do not change the "RV1495"  word
 	}
 
 	//=====================================================================================================================

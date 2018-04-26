@@ -24,8 +24,9 @@ block RTDC.*
 #variable RTDC.vfAllHits_126
 
 # V1495 Clock Count
-variable V1495ClockCount
-variable V1495ClockInterval
+block RV1495.*
+#variable V1495ClockCount
+#variable V1495ClockInterval
 
 # Physics variables
 block RightBCM*
@@ -433,6 +434,9 @@ block DL.*
 # F1 tdc
 block LTDC.*
 #variable LTDC.F1AllHits_033
+
+#Left V1495 clock from MLU
+block LV1495.*
 
 # Physics variables
 block L.gold.*
