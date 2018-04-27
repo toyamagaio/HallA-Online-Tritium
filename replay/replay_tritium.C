@@ -58,8 +58,11 @@ void replay_tritium(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t Qu
   //==================================
 
   if(RIGHT_ARM_CONDITION){
-    ODEF=Form(REPLAY_DIR_PREFIX,"RHRS_pass1_calibration.odef");
-    if(autoreplay)  ODEF=Form(REPLAY_DIR_PREFIX,"RHRS_pass1.odef");
+    if(TString("yes").CompareTo(gSystem->Getenv("CALIBRATION_RUN"))==0){
+      ODEF=Form(REPLAY_DIR_PREFIX,"RHRS_pass1_calibration.odef");
+    }else{
+      ODEF=Form(REPLAY_DIR_PREFIX,"RHRS_pass1.odef");
+    }
     CUTS=Form(REPLAY_DIR_PREFIX,"RHRS.cuts");
     //==================================
     //  Detectors
@@ -218,8 +221,11 @@ void replay_tritium(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t Qu
   //==================================
   
   else if(LEFT_ARM_CONDITION){
-    ODEF=Form(REPLAY_DIR_PREFIX,"LHRS_pass1_calibration.odef");
-    if(autoreplay)  ODEF=Form(REPLAY_DIR_PREFIX,"LHRS_pass1.odef");
+    if(TString("yes").CompareTo(gSystem->Getenv("CALIBRATION_RUN"))==0){
+      ODEF=Form(REPLAY_DIR_PREFIX,"LHRS_pass1_calibration.odef");
+    }else{
+      ODEF=Form(REPLAY_DIR_PREFIX,"LHRS_pass1.odef");
+    }
     CUTS=Form(REPLAY_DIR_PREFIX,"LHRS.cuts");
     //==================================
     //  Detectors
