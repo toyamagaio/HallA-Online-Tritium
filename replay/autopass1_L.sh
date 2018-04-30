@@ -73,7 +73,7 @@ if [ $pc == "aonl1.jlab.org" ]; then  # to avoid repeating running
 	    if [[ $(find ${RAWDIR}/triton_${thisrun}.dat.0 -type f -size +10000000c 2>/dev/null) ]]; then  # require rawdata > 10 Mbytes
 		echo  ==Found ${RAWDIR}/triton_${thisrun}.dat.0
 		if [ -e /chafs1/work1/tritium/pass1/tritium_${thisrun}.root ]; then
-		    echo !! Can not Overwriting /chafs1/work1/tritium/pass1/tritium_${thisrun}_1.root
+		    echo !! Can not Overwriting /chafs1/work1/tritium/pass1/tritium_${thisrun}.root
 		
 		else 
 		    echo Start analyzing
