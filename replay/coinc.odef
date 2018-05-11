@@ -362,6 +362,8 @@ variable evRightd3_r
 variable evRightd10
 variable evRightd10_r
 
+# =========================================================================
+# Epics ("E") Tree variables
 begin epics
   haBDSPOS
   HacR_alignAGL
@@ -370,6 +372,14 @@ begin epics
   HALLA:dpp
 
   haBDSPOS.VAL 
+
+  # ------------------------------
+  # LVDT angles and mispointings
+  HacL_CalcAngle
+  HacL_CalcPoint
+  HacR_CalcAngle
+  HacR_CalcPoint
+  # ------------------------------
 
   hac_bcm_average
   hac_bcm_dvm1_read
@@ -414,6 +424,7 @@ begin epics
   #HacL_D1_LS450:SIG
   HacR_D1_LS450:SIGLCK
 end epics
+# =========================================================================
 
 # Left HRS
 block L.s2.*
