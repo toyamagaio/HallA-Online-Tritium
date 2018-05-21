@@ -291,9 +291,9 @@ void TriBCM::DeleteArrays()
 {
   // Delete member arrays. Internal function used by destructor.
 
-  	delete [] BeamOn;    BeamOn   = NULL;
-	delete [] BeamUp;    BeamUp   = NULL;
-	delete [] BeamUp_S;  BeamUp_S = NULL;
+  	//delete [] BeamOn;    BeamOn   = NULL;
+	//delete [] BeamUp;    BeamUp   = NULL;
+	//delete [] BeamUp_S;  BeamUp_S = NULL;
 
 }
 //ClassImp(TriBCM)
