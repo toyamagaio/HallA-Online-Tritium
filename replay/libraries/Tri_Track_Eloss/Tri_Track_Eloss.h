@@ -7,7 +7,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "Tri_ElossCorrection.h"
+#include "../Tri_ElossCorrection/Tri_ElossCorrection.h"
 #include "THaTrackingModule.h"
 
 class Tri_Track_Eloss : public Tri_ElossCorrection, public THaTrackingModule {
