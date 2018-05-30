@@ -320,10 +320,10 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		gSystem->Exec(Form("ln -sf %scoinc_%d.pdf %scoinc_latest.pdf"                    ,path_to_plots,runnumber       ,path_to_plots          ));
 
 		gSystem->Exec(Form("%sonline -P -f %s -r %d"                                     ,GUI_DIR      ,CONFIGCOINCPHYS ,runnumber            ));
-		gSystem->Exec(Form("mv %stemp_%d.pdf %scoinc_physics_%d.pdf"                     ,SUM_DIR      ,runnumber       ,path_to_plots,runnumber));
-		gSystem->Exec(Form("unlink %scoinc_physics_latest.pdf"                           ,SUM_DIR                                               ));
-		gSystem->Exec(Form("ln -s %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"     ,path_to_plots,runnumber       ,SUM_DIR                ));    
-		gSystem->Exec(Form("ln -sf %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"    ,path_to_plots,runnumber       ,path_to_plots          ));
+                gSystem->Exec(Form("mv %stemp_%d.pdf %scoinc_physics_%d.pdf"                     ,SUM_DIR      ,runnumber       ,path_to_plots,runnumber));
+                gSystem->Exec(Form("unlink %scoinc_physics_latest.pdf"                           ,SUM_DIR                                               ));
+                gSystem->Exec(Form("ln -s %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"     ,path_to_plots,runnumber       ,SUM_DIR                ));    
+                gSystem->Exec(Form("ln -sf %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"    ,path_to_plots,runnumber       ,path_to_plots          ));
 	}
 
 	exit(0);
