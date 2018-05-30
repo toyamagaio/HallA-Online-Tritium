@@ -112,6 +112,21 @@ void Tri_Beam_Eloss::CalcEloss( THaBeamInfo* beamifo )
 	else {
 		fEloss = ElossHadron( fZ, beta, fZmed, fAmed, fDensity, fPathlength );
 	}
+
+	// ----------------------------------------------------------------------------	
+	// Account for the energy loss in the Beryllium window upstream of the targets
+	// 05-30-2018 RCT
+	Double_t eloss_Be(0);
+
+	// Setting up Beryllium parameters
+	Double_t Z_Be   = 4.       ;
+        Double_t A_Be   = 9.0122   ; //(amu)
+        Double_t rho_Be = 1.848    ; //g/cc
+	Double_t l_Be   = 0.2003E-3; // m
+	
+	eloss_Be = ElossElectron( beta, Z_Be, A_Be, rho_Be, l_Be ); // Beryllium Window Energy Loss
+	fEloss += eloss_Be;
+	// ----------------------------------------------------------------------------
 }
 
 //_____________________________________________________________________________

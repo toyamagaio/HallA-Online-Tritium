@@ -103,13 +103,13 @@ void Tri_Track_Eloss::CalcEloss( THaTrackInfo* trkifo )
 	// It's actually Al 7075 (rho = 2.81 g/cc) for the target,
 	// and Al 2024-T3 (rho = 2.78 g/cc) for the scattering chamber
 	// exit. But, just use 2.80 g/cc here...
-	Double_t Z_Al   = 13. ;
+	Double_t Z_Al   = 13.  ;
 	Double_t A_Al   = 26.98 ;
-	Double_t rho_Al = 2.80 ;
+	Double_t rho_Al = 2.80  ;
 
 	//Air
-	Double_t Z_Air   = 7.22000 ;
-	Double_t A_Air   = 14.46343 ;
+	Double_t Z_Air   = 7.22000     ;
+	Double_t A_Air   = 14.46343    ;
 	Double_t rho_Air = 1.20480E-03 ;
 
 	//Kapton
@@ -117,11 +117,16 @@ void Tri_Track_Eloss::CalcEloss( THaTrackInfo* trkifo )
 	Double_t A_Kap   = 9.80345 ;
 	Double_t rho_Kap = 1.42000 ;
 
+	//Titanium
+	Double_t Z_Ti    = 22.    ;
+	Double_t A_Ti    = 47.867 ;
+	Double_t rho_Ti  = 4.540  ;
+
 	// Check if target corresponds to one of the gas cells
 	if(fZmed < 3. && fAmed < 4.){	
 
-		Double_t eloss_gas(0), eloss_Al1(0), eloss_Al2(0), eloss_Air(0), eloss_Kap(0) ;
-		Double_t l_gas(0), l_Al1(0), l_Al2(0),l_Air,l_Kap(0) ;
+		Double_t eloss_gas(0), eloss_Al1(0), eloss_Al2(0), eloss_Air(0), eloss_Kap(0), eloss_Ti(0);
+		Double_t l_gas(0), l_Al1(0), l_Al2(0), l_Air, l_Kap(0), l_Ti(0);
 
 		//Set Target Geometry
 		Double_t R; // diameters is 0.77 inch
@@ -212,6 +217,9 @@ void Tri_Track_Eloss::CalcEloss( THaTrackInfo* trkifo )
 		// Kapton window at Spectrometer Entrance
 		l_Kap = 3.048E-4 ; // (i.e. 0.012")
 
+		// Titanium at the exit of Q3
+		l_Ti = 0.1016E-3 ;
+
 		// --------------------------------------------------------------
 		// Calculate energy loss with the parameters determined above
 
@@ -221,6 +229,7 @@ void Tri_Track_Eloss::CalcEloss( THaTrackInfo* trkifo )
 			eloss_Al2 = ElossElectron( beta, Z_Al , A_Al , rho_Al  , l_Al2 ); // Aluminum Scattering Chamber Exit Window
 			eloss_Air = ElossElectron( beta, Z_Air, A_Air, rho_Air , l_Air ); // Air between Scattering Chamber and HRS
 			eloss_Kap = ElossElectron( beta, Z_Kap, A_Kap, rho_Kap , l_Kap ); // Kapton window at Spectrometer Entrance
+			eloss_Ti  = ElossElectron( beta, Z_Ti , A_Ti , rho_Ti  , l_Ti  ); // Titanium at the exit of Q3
 		}
 		else{
 			eloss_gas = ElossHadron( fZ, beta, fZmed, fAmed, fDensity, l_gas ); // Gas Target
@@ -228,10 +237,11 @@ void Tri_Track_Eloss::CalcEloss( THaTrackInfo* trkifo )
 			eloss_Al2 = ElossHadron( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al2 ); // Aluminum Scattering Chamber Exit Window
 			eloss_Air = ElossHadron( fZ, beta, Z_Air, A_Air, rho_Air , l_Air ); // Air between Scattering Chamber and HRS
 			eloss_Kap = ElossHadron( fZ, beta, Z_Kap, A_Kap, rho_Kap , l_Kap ); // Kapton window at Spectrometer Entrance
+			eloss_Ti  = ElossHadron( fZ, beta, Z_Ti , A_Ti , rho_Ti  , l_Ti  ); // Titanium at the exit of Q3
 		}
 		// Calculate Total Eloss
 		fPathlength = l_gas; // Set as pathlength through gas...not really important
-		fEloss = eloss_gas + eloss_Al1 + eloss_Al2 + eloss_Air + eloss_Kap ;
+		fEloss = eloss_gas + eloss_Al1 + eloss_Al2 + eloss_Air + eloss_Kap + eloss_Ti ;
 
 	}
 	// if this is not one of the gas cells
