@@ -7,10 +7,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "THaElossCorrection.h"
+#include "Tri_ElossCorrection.h"
 #include "THaBeamModule.h"
 
-class Tri_Beam_Eloss : public THaElossCorrection, public THaBeamModule {
+class Tri_Beam_Eloss : public Tri_ElossCorrection, public THaBeamModule {
   
 public:
   Tri_Beam_Eloss( const char* name, const char* description,

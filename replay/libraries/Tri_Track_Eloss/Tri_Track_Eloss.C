@@ -49,7 +49,7 @@ Tri_Track_Eloss::Tri_Track_Eloss( const char* name,
 		const Double_t air_length,
 		Double_t particle_mass,
 		Int_t hadron_charge ) :
-	THaElossCorrection(name,description,input_tracks,particle_mass,
+	Tri_ElossCorrection(name,description,input_tracks,particle_mass,
 			hadron_charge), 
 	fTLength(t_length), 
 	fAirLength(air_length),
@@ -251,7 +251,7 @@ void Tri_Track_Eloss::Clear( Option_t* opt )
 {
 	// Clear all event-by-event variables.
 
-	THaElossCorrection::Clear(opt);
+	Tri_ElossCorrection::Clear(opt);
 	TrkIfoClear();
 }
 
@@ -282,7 +282,7 @@ THaAnalysisObject::EStatus Tri_Track_Eloss::Init( const TDatime& run_time )
 
 	// Standard initialization. Calls this object's DefineVariables() and
 	// reads meterial properties from the run database.
-	THaElossCorrection::Init( run_time );
+	Tri_ElossCorrection::Init( run_time );
 
 	return fStatus;
 }
@@ -293,7 +293,7 @@ Int_t Tri_Track_Eloss::DefineVariables( EMode mode )
 	// Define/delete global variables.
 
 	if( mode == kDefine && fIsSetup ) return kOK;
-	THaElossCorrection::DefineVariables( mode );
+	Tri_ElossCorrection::DefineVariables( mode );
 
 	return DefineVarsFromList( THaTrackingModule::GetRVarDef(), mode );
 }

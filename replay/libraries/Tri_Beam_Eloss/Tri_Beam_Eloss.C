@@ -15,7 +15,7 @@
 // Correct energy loss of the beam by an amount that depends on reaction
 // vertex. For the gas target, the beam passes through an entrance window (Al 7075).
 //
-// Since a call to THaElossCorrection::SetPathlength(...) sets fExtPathMode = kTRUE,
+// Since a call to Tri_ElossCorrection::SetPathlength(...) sets fExtPathMode = kTRUE,
 // the "pathlength" will not be read from the database. So, we allow the user to set 
 // the target z offset when instantiating this class.
 // (N.B. If a target of length "x" is centered at z = 0., the offset should be
@@ -38,7 +38,7 @@ using namespace std;
 Tri_Beam_Eloss::Tri_Beam_Eloss( const char* name, const char* description,
 		const char* input_beam, const char* vertex,
 		const Double_t z_offset ) :
-	THaElossCorrection(name,description,input_beam), fBeamModule(NULL)
+	Tri_ElossCorrection(name,description,input_beam), fBeamModule(NULL)
 {
 	// Normal constructor.
 
@@ -118,7 +118,7 @@ void Tri_Beam_Eloss::CalcEloss( THaBeamInfo* beamifo )
 void Tri_Beam_Eloss::Clear( Option_t* opt )
 {
 	// Clear all event-by-event variables.
-	THaElossCorrection::Clear(opt);
+	Tri_ElossCorrection::Clear(opt);
 	BeamIfoClear();
 }
 
@@ -156,7 +156,7 @@ THaAnalysisObject::EStatus Tri_Beam_Eloss::Init( const TDatime& run_time )
 
 	// Standard initialization. Calls this object's DefineVariables().
 	// Reads material parameters from the run database
-	THaElossCorrection::Init( run_time );
+	Tri_ElossCorrection::Init( run_time );
 
 	return fStatus;
 }
@@ -167,7 +167,7 @@ Int_t Tri_Beam_Eloss::DefineVariables( EMode mode )
 	// Define/delete global variables.
 
 	if( mode == kDefine && fIsSetup ) return kOK;
-	THaElossCorrection::DefineVariables( mode );
+	Tri_ElossCorrection::DefineVariables( mode );
 
 	// Define the variables for the beam info subobject
 	return DefineVarsFromList( THaBeamModule::GetRVarDef(), mode );
