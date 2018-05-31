@@ -4587,7 +4587,7 @@ R.off_z = 5.55e-04
 
 --------[ 2018-04-18 08:54:39 ]
 # parameters from EPICS run 100191
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8809
 L.pcentral = 3.54333
 FbusL.theta = 20.8809
@@ -4659,7 +4659,7 @@ R.off_z = 5.54e-04
 
 --------[ 2018-04-18 11:22:26 ]
 # parameters from EPICS run 100194
-ebeam   =  4.324304 
+ebeam   =  4.3256
 L.theta = 20.8809
 L.pcentral = 3.54333
 FbusL.theta = 20.8809
@@ -4731,7 +4731,7 @@ R.off_z = 5.52e-04
 
 --------[ 2018-04-18 13:37:57 ]
 # parameters from EPICS run 100197
-ebeam   =  4.324304 
+ebeam   =  4.3257 
 L.theta = 20.881
 L.pcentral = 3.54333
 FbusL.theta = 20.881
@@ -4755,7 +4755,7 @@ R.off_z = 5.54e-04
 
 --------[ 2018-04-18 14:27:43 ]
 # parameters from EPICS run 100198
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.881
 L.pcentral = 3.54333
 FbusL.theta = 20.881
@@ -5307,7 +5307,7 @@ R.off_z = 5.51e-04
 
 --------[ 2018-04-19 06:20:31 ]
 # parameters from EPICS run 100221
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8811
 L.pcentral = 3.54333
 FbusL.theta = 20.8811
@@ -5643,7 +5643,7 @@ R.off_z = 5.54e-04
 
 --------[ 2018-04-19 17:35:10 ]
 # parameters from EPICS run 100235
-ebeam   =  4.324304 
+ebeam   =  4.3258 
 L.theta = 20.881
 L.pcentral = 3.54333
 FbusL.theta = 20.881
@@ -7419,7 +7419,7 @@ R.off_z = 5.54e-04
 
 --------[ 2018-04-21 19:52:35 ]
 # parameters from EPICS run 100311
-ebeam   =  4.324304 
+ebeam   =  4.3259 
 L.theta = 20.8809
 L.pcentral = 3.54333
 FbusL.theta = 20.8809
@@ -8307,7 +8307,7 @@ R.off_z = 5.52e-04
 
 --------[ 2018-04-22 18:30:26 ]
 # parameters from EPICS run 100348
-ebeam   =  4.324304 
+ebeam   =  4.3259 
 L.theta = 20.8809
 L.pcentral = 3.54333
 FbusL.theta = 20.8809
@@ -8595,7 +8595,7 @@ R.off_z = 5.59e-04
 
 --------[ 2018-04-23 01:49:57 ]
 # parameters from EPICS run 100360
-ebeam   =  4.324304 
+ebeam   =  4.3259 
 L.theta = 20.8809
 L.pcentral = 3.54333
 FbusL.theta = 20.8809
@@ -9027,7 +9027,7 @@ R.off_z = 5.54e-04
 
 --------[ 2018-04-23 19:16:33 ]
 # parameters from EPICS run 100378
-ebeam   =  4.324304 
+ebeam   =  4.3257 
 L.theta = 20.8809
 L.pcentral = 3.54333
 FbusL.theta = 20.8809
@@ -9075,7 +9075,7 @@ R.off_z = 5.60e-04
 
 --------[ 2018-04-23 21:40:16 ]
 # parameters from EPICS run 100380
-ebeam   =  4.324304 
+ebeam   =  4.3254 
 L.theta = 20.8809
 L.pcentral = 3.54334
 FbusL.theta = 20.8809
@@ -9243,7 +9243,7 @@ R.off_z = 5.56e-04
 
 --------[ 2018-04-24 02:11:17 ]
 # parameters from EPICS run 100387
-ebeam   =  4.324304 
+ebeam   =  4.3254 
 L.theta = 20.8809
 L.pcentral = 3.54334
 FbusL.theta = 20.8809
@@ -10083,7 +10083,7 @@ R.off_z = 5.54e-04
 
 --------[ 2018-04-25 03:38:22 ]
 # parameters from EPICS run 100422
-ebeam   =  4.324304 
+ebeam   =  4.3257 
 L.theta = 20.881
 L.pcentral = 3.54333
 FbusL.theta = 20.881
@@ -10203,7 +10203,7 @@ R.off_z = 5.56e-04
 
 --------[ 2018-04-25 06:17:07 ]
 # parameters from EPICS run 100427
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.881
 L.pcentral = 3.54333
 FbusL.theta = 20.881
@@ -10275,7 +10275,7 @@ R.off_z = 5.54e-04
 
 --------[ 2018-04-25 08:10:14 ]
 # parameters from EPICS run 100430
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.881
 L.pcentral = 3.54333
 FbusL.theta = 20.881
@@ -10347,7 +10347,7 @@ R.off_z = 5.54e-04
 
 --------[ 2018-04-25 10:12:45 ]
 # parameters from EPICS run 100433
-ebeam   =  4.324304 
+ebeam   =  4.3257 
 L.theta = 20.881
 L.pcentral = 3.54333
 FbusL.theta = 20.881
@@ -10395,7 +10395,7 @@ R.off_z = 5.54e-04
 
 --------[ 2018-04-25 11:52:24 ]
 # parameters from EPICS run 100435
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8811
 L.pcentral = 3.54333
 FbusL.theta = 20.8811
@@ -10491,7 +10491,7 @@ R.off_z = 5.57e-04
 
 --------[ 2018-04-25 14:38:57 ]
 # parameters from EPICS run 100439
-ebeam   =  4.324304 
+ebeam   =  4.3257 
 L.theta = 20.8811
 L.pcentral = 3.54333
 FbusL.theta = 20.8811
@@ -11067,7 +11067,7 @@ R.off_z = 5.53e-04
 
 --------[ 2018-04-26 06:07:00 ]
 # parameters from EPICS run 100463
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8811
 L.pcentral = 3.54333
 FbusL.theta = 20.8811
@@ -11187,7 +11187,7 @@ R.off_z = 5.52e-04
 
 --------[ 2018-04-26 09:19:35 ]
 # parameters from EPICS run 100468
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8812
 L.pcentral = 3.54333
 FbusL.theta = 20.8812
@@ -11403,7 +11403,7 @@ R.off_z = 5.50e-04
 
 --------[ 2018-04-26 16:02:22 ]
 # parameters from EPICS run 100477
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8811
 L.pcentral = 3.54332
 FbusL.theta = 20.8811
@@ -11883,7 +11883,7 @@ R.off_z = 5.53e-04
 
 --------[ 2018-04-27 03:45:21 ]
 # parameters from EPICS run 100497
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8811
 L.pcentral = 3.54332
 FbusL.theta = 20.8811
@@ -11955,7 +11955,7 @@ R.off_z = 5.51e-04
 
 --------[ 2018-04-27 05:33:40 ]
 # parameters from EPICS run 100500
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8811
 L.pcentral = 3.54332
 FbusL.theta = 20.8811
@@ -12003,7 +12003,7 @@ R.off_z = 5.60e-04
 
 --------[ 2018-04-27 07:05:04 ]
 # parameters from EPICS run 100502
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8811
 L.pcentral = 3.54332
 FbusL.theta = 20.8811
@@ -12075,7 +12075,7 @@ R.off_z = 5.54e-04
 
 --------[ 2018-04-27 08:53:19 ]
 # parameters from EPICS run 100505
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8811
 L.pcentral = 3.54332
 FbusL.theta = 20.8811
@@ -12363,7 +12363,7 @@ R.off_z = 5.56e-04
 
 --------[ 2018-04-27 16:53:47 ]
 # parameters from EPICS run 100517
-ebeam   =  0.000000 
+ebeam   =  4.3256 
 L.theta = 20.8812
 L.pcentral = 3.54332
 FbusL.theta = 20.8812
@@ -12555,7 +12555,7 @@ R.off_z = 5.58e-04
 
 --------[ 2018-04-27 20:41:41 ]
 # parameters from EPICS run 100525
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8812
 L.pcentral = 3.54331
 FbusL.theta = 20.8812
@@ -12723,7 +12723,7 @@ R.off_z = 5.55e-04
 
 --------[ 2018-04-28 00:59:25 ]
 # parameters from EPICS run 100532
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8812
 L.pcentral = 3.54331
 FbusL.theta = 20.8812
@@ -12819,7 +12819,7 @@ R.off_z = 5.57e-04
 
 --------[ 2018-04-28 03:32:46 ]
 # parameters from EPICS run 100536
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8812
 L.pcentral = 3.54331
 FbusL.theta = 20.8812
@@ -12843,7 +12843,7 @@ R.off_z = 5.58e-04
 
 --------[ 2018-04-28 04:30:58 ]
 # parameters from EPICS run 100537
-ebeam   =  4.324304 
+ebeam   =  4.3256 
 L.theta = 20.8813
 L.pcentral = 3.54331
 FbusL.theta = 20.8813
@@ -12963,7 +12963,7 @@ R.off_z = 5.59e-04
 
 --------[ 2018-04-28 07:10:18 ]
 # parameters from EPICS run 100542
-ebeam   =  4.324304 
+ebeam   =  4.3255 
 L.theta = 20.8812
 L.pcentral = 3.54331
 FbusL.theta = 20.8812
@@ -14523,7 +14523,7 @@ R.off_z = 2.26e-03
 
 --------[ 2018-04-29 22:01:10 ]
 # parameters from EPICS run 100607
-ebeam   =  4.324304 
+ebeam   =  4.3257 
 L.theta = 20.8813
 L.pcentral = 3.5433
 FbusL.theta = 20.8813
@@ -14907,7 +14907,7 @@ R.off_z = 2.25e-03
 
 --------[ 2018-04-30 08:08:10 ]
 # parameters from EPICS run 100623
-ebeam   =  4.327452 
+ebeam   =  4.3256 
 L.theta = 20.8812
 L.pcentral = 3.5433
 FbusL.theta = 20.8812
@@ -16227,7 +16227,7 @@ R.off_z = 2.26e-03
 
 --------[ 2018-05-02 02:53:49 ]
 # parameters from EPICS run 100680
-ebeam   =  4.324304 
+ebeam   =  4.3257 
 L.theta = 17.8053
 L.pcentral = 3.5433
 FbusL.theta = 17.8053
@@ -16323,7 +16323,7 @@ R.off_z = 2.26e-03
 
 --------[ 2018-05-02 06:09:40 ]
 # parameters from EPICS run 100684
-ebeam   =  4.324304 
+ebeam   =  4.3257 
 L.theta = 17.8053
 L.pcentral = 3.5433
 FbusL.theta = 17.8053
