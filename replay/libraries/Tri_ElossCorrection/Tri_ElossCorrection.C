@@ -114,7 +114,7 @@ Int_t Tri_ElossCorrection::ReadRunDatabase( const TDatime& date )
 	};
 	// Ignore pathlength if variable pathlength mode
 	if( fExtPathMode )
-		req[5].optional = kFALSE;
+		req[5].optional = kTRUE;
 
 	// Ignore database entries if parameter already set
 	DBRequest* item = req;
