@@ -37,9 +37,10 @@ block exR.*
 block EKR.*
 block EKRc.*
 block EKRx.*
-#block ElbR.*
-#block EltR.*
-#block EKRxe.*
+block EltR.*
+block EKRxe.*
+
+block Elb.*
 
 block ib.*
 #BPM/Raster Variables
@@ -456,9 +457,8 @@ block exL.*
 block EKL.*
 block EKLc.*
 block EKLx.*
-#block ElbL.*
-#block EltL.*
-#block EKLxe.*
+block EltL.*
+block EKLxe.*
 block LeftBCM*
 block LeftBCMev*
 
