@@ -15867,7 +15867,7 @@ R.off_z = 2.26e-03
 
 --------[ 2018-05-01 13:38:41 ]
 # parameters from EPICS run 100665
-ebeam   =  4.324304 
+ebeam   =  4.32503
 L.theta = 20.8813
 L.pcentral = 3.5433
 FbusL.theta = 20.8813
