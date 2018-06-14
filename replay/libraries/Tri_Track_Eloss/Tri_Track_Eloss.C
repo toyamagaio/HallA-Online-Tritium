@@ -117,16 +117,11 @@ void Tri_Track_Eloss::CalcEloss( THaTrackInfo* trkifo )
 	Double_t A_Kap   = 9.80345 ;
 	Double_t rho_Kap = 1.42000 ;
 
-	//Titanium
-	Double_t Z_Ti    = 22.    ;
-	Double_t A_Ti    = 47.867 ;
-	Double_t rho_Ti  = 4.540  ;
-
 	// Check if target corresponds to one of the gas cells
 	if(fZmed < 3. && fAmed < 4.){	
 
-		Double_t eloss_gas(0), eloss_Al1(0), eloss_Al2(0), eloss_Air(0), eloss_Kap(0), eloss_Ti(0);
-		Double_t l_gas(0), l_Al1(0), l_Al2(0), l_Air, l_Kap(0), l_Ti(0);
+		Double_t eloss_gas(0), eloss_Al1(0), eloss_Al2(0), eloss_Air(0), eloss_Kap(0);
+		Double_t l_gas(0), l_Al1(0), l_Al2(0), l_Air, l_Kap(0);
 
 		//Set Target Geometry
 		Double_t R; // diameters is 0.77 inch
@@ -147,8 +142,7 @@ void Tri_Track_Eloss::CalcEloss( THaTrackInfo* trkifo )
 		// for each target I average the "mid left" and "mid right" values
 		// ---------------------------------------------------------------------------------------------
 
-		R = 0.77/2.*0.0254; // 0.77/2 inches to meters
-		// (got this radius from doc: TGT-103-1000-0101.pdf)
+		R = 0.0065; // meters
 
 		Double_t Z_cap = (fTLength/2. - R) + fZref;
 		Double_t pi = 3.14159265358979323846;
@@ -217,40 +211,35 @@ void Tri_Track_Eloss::CalcEloss( THaTrackInfo* trkifo )
 		// Kapton window at Spectrometer Entrance
 		l_Kap = 3.048E-4 ; // (i.e. 0.012")
 
-		// Titanium at the exit of Q3
-		l_Ti = 0.1016E-3 ;
-
 		// --------------------------------------------------------------
 		// Calculate energy loss with the parameters determined above
 
-		if( fElectronMode ) {
-			eloss_gas = ElossElectron( beta, fZmed, fAmed, fDensity, l_gas ); // Gas Target
-			eloss_Al1 = ElossElectron( beta, Z_Al , A_Al , rho_Al  , l_Al1 ); // Aluminum Target Wall 
-			eloss_Al2 = ElossElectron( beta, Z_Al , A_Al , rho_Al  , l_Al2 ); // Aluminum Scattering Chamber Exit Window
-			eloss_Air = ElossElectron( beta, Z_Air, A_Air, rho_Air , l_Air ); // Air between Scattering Chamber and HRS
-			eloss_Kap = ElossElectron( beta, Z_Kap, A_Kap, rho_Kap , l_Kap ); // Kapton window at Spectrometer Entrance
-			eloss_Ti  = ElossElectron( beta, Z_Ti , A_Ti , rho_Ti  , l_Ti  ); // Titanium at the exit of Q3
+		if( fElectronMode ) {			
+			eloss_gas = MostProbEloss( fZ, beta, fZmed, fAmed, fDensity, l_gas ); // Gas Target
+			eloss_Al1 = MostProbEloss( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al1 ); // Aluminum Target Wall 
+			eloss_Al2 = MostProbEloss( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al2 ); // Aluminum Scattering Chamber Exit Window
+			eloss_Air = MostProbEloss( fZ, beta, Z_Air, A_Air, rho_Air , l_Air ); // Air between Scattering Chamber and HRS
+			eloss_Kap = MostProbEloss( fZ, beta, Z_Kap, A_Kap, rho_Kap , l_Kap ); // Kapton window at Spectrometer Entrance
 		}
 		else{
-			eloss_gas = ElossHadron( fZ, beta, fZmed, fAmed, fDensity, l_gas ); // Gas Target
-			eloss_Al1 = ElossHadron( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al1 ); // Aluminum Target Wall 
-			eloss_Al2 = ElossHadron( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al2 ); // Aluminum Scattering Chamber Exit Window
-			eloss_Air = ElossHadron( fZ, beta, Z_Air, A_Air, rho_Air , l_Air ); // Air between Scattering Chamber and HRS
-			eloss_Kap = ElossHadron( fZ, beta, Z_Kap, A_Kap, rho_Kap , l_Kap ); // Kapton window at Spectrometer Entrance
-			eloss_Ti  = ElossHadron( fZ, beta, Z_Ti , A_Ti , rho_Ti  , l_Ti  ); // Titanium at the exit of Q3
+			eloss_gas = MostProbEloss( fZ, beta, fZmed, fAmed, fDensity, l_gas ); // Gas Target
+			eloss_Al1 = MostProbEloss( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al1 ); // Aluminum Target Wall 
+			eloss_Al2 = MostProbEloss( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al2 ); // Aluminum Scattering Chamber Exit Window
+			eloss_Air = MostProbEloss( fZ, beta, Z_Air, A_Air, rho_Air , l_Air ); // Air between Scattering Chamber and HRS
+			eloss_Kap = MostProbEloss( fZ, beta, Z_Kap, A_Kap, rho_Kap , l_Kap ); // Kapton window at Spectrometer Entrance
 		}
 		// Calculate Total Eloss
 		fPathlength = l_gas; // Set as pathlength through gas...not really important
-		fEloss = eloss_gas + eloss_Al1 + eloss_Al2 + eloss_Air + eloss_Kap + eloss_Ti ;
+		fEloss = eloss_gas + eloss_Al1 + eloss_Al2 + eloss_Air + eloss_Kap;
 
 	}
 	// if this is not one of the gas cells
 	else{
 		if( fElectronMode ) {
-			fEloss = ElossElectron( beta, fZmed, fAmed, fDensity, fPathlength );
+			fEloss = MostProbEloss( fZ, beta, fZmed, fAmed, fDensity, fPathlength );
 		}
 		else {
-			fEloss = ElossHadron( fZ, beta, fZmed, fAmed, fDensity, fPathlength );
+			fEloss = MostProbEloss( fZ, beta, fZmed, fAmed, fDensity, fPathlength );
 		}
 	}
 
