@@ -323,7 +323,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
                         EltL->SetMedium(Z,A,density);
                         gHaPhysics->Add(EltL);
 
-			Tri_Track_Eloss *EltR = new Tri_Track_Eloss("EltR","Track Corrected for Energy Loss","exR","rpl",targ_length,ztrack_off,air_lengthR);
+			Tri_Track_Eloss *EltR = new Tri_Track_Eloss("EltR","Track Corrected for Energy Loss","exR","rpl",targ_length,ztrack_off,air_lengthR,0.938);
                         EltR->SetDebug(1);
                         EltR->SetMedium(Z,A,density);
                         gHaPhysics->Add(EltR);
