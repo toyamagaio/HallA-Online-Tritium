@@ -33,11 +33,12 @@
 
 #include "TObject.h" //trick to avoid error: `Int_t' does not name a type
 #include "TString.h"
+#include "TSystem.h"
 
 //Used for setting paths. %s is necessary so that it can be used to Form the paths.
 //This allows changing the directory in fewer places for ease of portability.
 const char* REPLAY_DIR_PREFIX = "./%s";
-const char* ROOTFILE_DIR_PREFIX = "./t2root/%s";
+const char* ROOTFILE_DIR_PREFIX = "/volatile/halla/triton/Marathon_Rootfiles/%s";
 
 typedef struct _sReplaySetUp
 {
@@ -59,8 +60,8 @@ static const char* PATHS[] = {
 };
 
 static const char* RAW_DATA_FORMAT="%s/triton_%d.dat.%d";
-
-TString STD_REPLAY_OUTPUT_DIR= TString::Format(ROOTFILE_DIR_PREFIX,"pass1");	//pass1 auto hack
+TString STD_REPLAY_OUTPUT_DIR= TString::Format(ROOTFILE_DIR_PREFIX,gSystem->Getenv("OUT_DIR"));
+  
 //TString STD_REPLAY_OUTPUT_DIR= TString::Format("/volatile/halla/triton/Marathon_Rootfiles/pass1_test");	//pass 1 hack
 TString CUSTOM_REPLAY_OUTPUT_DIR= TString::Format(ROOTFILE_DIR_PREFIX,"ScratchROOTfiles");
 TString SUMMARY_PHYSICS_FORMAT= TString::Format(REPLAY_DIR_PREFIX,"summaryfiles/summaryphy_%d.log");
