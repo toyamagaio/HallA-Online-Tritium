@@ -79,31 +79,20 @@ void Tri_Track_Eloss::CalcEloss( THaTrackInfo* trkifo )
 {
 	// Compute the expected energy loss for the track given in trkifo
 	// as well as the vertex location.
-	//
 
-	TVector3 MomDirectionHCS;
-	Double_t vx =fVertexModule->GetVertex().X();
-	Double_t vy =fVertexModule->GetVertex().Y();
-	Double_t vz =fVertexModule->GetVertex().Z(); // vertex position
-	Double_t thP=trkifo->GetPvect().X() / trkifo->GetPvect().Z();// thP=dx/dz
-	Double_t phP=trkifo->GetPvect().Y() / trkifo->GetPvect().Z();// phP=dy/dz
-	Double_t px=trkifo->GetPvect().X();
-	Double_t py=trkifo->GetPvect().Y();
-	Double_t pz=trkifo->GetPvect().Z();  
 	Double_t p0 = trkifo->GetP();
+	Double_t pZ = trkifo->GetPz();
 	Double_t beta = p0 / TMath::Sqrt(p0*p0 + fM*fM);
+	Double_t Z = fVertexModule->GetVertex().Z();
 
-	MomDirectionHCS(0)=px;
-	MomDirectionHCS(1)=py;
-	MomDirectionHCS(2)=pz;
-
+	// -------------------------------------------------------------
 	//Set Material Parameter
 
 	//Aluminum
 	// It's actually Al 7075 (rho = 2.81 g/cc) for the target,
 	// and Al 2024-T3 (rho = 2.78 g/cc) for the scattering chamber
 	// exit. But, just use 2.80 g/cc here...
-	Double_t Z_Al   = 13.  ;
+	Double_t Z_Al   = 13.   ;
 	Double_t A_Al   = 26.98 ;
 	Double_t rho_Al = 2.80  ;
 
@@ -117,15 +106,54 @@ void Tri_Track_Eloss::CalcEloss( THaTrackInfo* trkifo )
 	Double_t A_Kap   = 9.80345 ;
 	Double_t rho_Kap = 1.42000 ;
 
+	// -------------------------------------------------------------
+	// Pathlength through materials
+
+	// Aluminum Scattering Chamber Exit Window
+	Double_t l_Al2 = 4.064E-4 ; // (i.e. 0.016")
+
+	// Air between Scattering Chamber and Spectrometer
+	Double_t l_Air = fAirLength ;
+	// 13.95" (RHRS), 10.62" (LHRS) for Spring 16
+	// 14.79" (RHRS), 15.23" (LHRS) for Fall 16             
+
+	// Kapton window at Spectrometer Entrance
+	Double_t l_Kap = 3.048E-4 ; // (i.e. 0.012")
+
+	// -------------------------------------------------------------
+	// Doing the energy loss calculation
+	// -----------------------------------
+	// Looks a bit dumb to have the "if" statements here, but if for
+	// any reason we switch to the mean energy loss calculation
+	// the equation will be different for protons and neutrons.
+
+	Double_t eloss_Al2(0), eloss_Air(0), eloss_Kap(0);
+	if( fElectronMode ) {
+		eloss_Al2 = MostProbEloss( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al2 ); // Aluminum Scattering Chamber Exit Window
+		eloss_Air = MostProbEloss( fZ, beta, Z_Air, A_Air, rho_Air , l_Air ); // Air between Scattering Chamber and HRS
+		eloss_Kap = MostProbEloss( fZ, beta, Z_Kap, A_Kap, rho_Kap , l_Kap ); // Kapton window at Spectrometer Entrance
+	}
+	else{
+		eloss_Al2 = MostProbEloss( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al2 ); // Aluminum Scattering Chamber Exit Window
+		eloss_Air = MostProbEloss( fZ, beta, Z_Air, A_Air, rho_Air , l_Air ); // Air between Scattering Chamber and HRS
+		eloss_Kap = MostProbEloss( fZ, beta, Z_Kap, A_Kap, rho_Kap , l_Kap ); // Kapton window at Spectrometer Entrance
+	}
+
+	fEloss = eloss_Al2 + eloss_Air + eloss_Kap;
+
+	// -------------------------------------------------------------
 	// Check if target corresponds to one of the gas cells
 	if(fZmed < 3. && fAmed < 4.){	
 
-		Double_t eloss_gas(0), eloss_Al1(0), eloss_Al2(0), eloss_Air(0), eloss_Kap(0);
-		Double_t l_gas(0), l_Al1(0), l_Al2(0), l_Air, l_Kap(0);
+		Double_t eloss_gas(0), eloss_Al1(0);
+		Double_t l_gas(0), l_Al1(0);
 
 		//Set Target Geometry
 		Double_t R; // diameters is 0.77 inch
-		Double_t Tip_Al = 0.11*1.e-3; //Tip thickness(m)
+		Double_t Tip_Al = 0.32*1.e-3; //Tip thickness(m)
+
+		Double_t theta = TMath::ACos(pZ/p0); //Scattering Angle (rad)
+		Double_t sin2 = TMath::Power(TMath::Sin(theta),2);
 
 		// ---------------------------------------------------------------------------------------------
 		// Thickness of the target side walls
@@ -145,71 +173,18 @@ void Tri_Track_Eloss::CalcEloss( THaTrackInfo* trkifo )
 		R = 0.0065; // meters
 
 		Double_t Z_cap = (fTLength/2. - R) + fZref;
-		Double_t pi = 3.14159265358979323846;
-		// Double_t Z_rel = Z - Z_cap ;
+		Double_t Z_rel = Z - Z_cap ;
 
-		Double_t tx=0,ty=0,tz=Z_cap;//center postion of the tip
-		TVector3 v_tipcenter; //vector from vertex to tip center, the direction is important
-		Double_t distance_tip=0;//distance between the vertex and the tip center
-		Double_t angleR=0,sin_angleR,cos_angleR=0; 
-
-		//angleR is the angle between the scattering momentum and the vertex-tipcenter line
-		distance_tip = TMath::Sqrt(TMath::Power(vx-tx,2)+TMath::Power(vy-ty,2)+TMath::Power(vz-tz-fZref,2)); 
-		v_tipcenter(0)=tx-vx;
-		v_tipcenter(1)=ty-vy;
-		v_tipcenter(2)=tz-vz;
-		cos_angleR =  (v_tipcenter.Dot(MomDirectionHCS))/( v_tipcenter.Mag()*MomDirectionHCS.Mag());
-		sin_angleR=TMath::Sqrt(1-cos_angleR*cos_angleR);
-		angleR = TMath::ACos( cos_angleR );
-
-		Double_t anglex=0,sin_anglex=0;//anglex corresponds to distance_tip
-		Double_t D=0,angleD=0;         //angleD corresponds to the traveling length
-		Double_t x,y,z;                //the calculated position at the cylindral
-		Double_t m1,m2,a,b,c,result1,result2;
-		Double_t sin_theta=0;
-
-		a=(px*px/py/py+1);
-		m1=vx/R;
-		m2=px/py/R*vy;
-		b=2*px/py*(m1-m2);
-		c=(m1-m2)*(m1-m2)-1;
-		result1 = (-b+TMath::Sqrt(b*b-4*a*c))/2/a; 
-		result2=(-b-TMath::Sqrt(b*b-4*a*c))/2/a;
-
-		sin_theta = (R*result1-vy)*py>=0?result1:sin_theta ;
-		sin_theta = (R*result2-vy)*py>=0?result2:sin_theta ;
-
-		y=R*sin_theta;
-		x=px/py*y-px/py*vy+vx;
-		z=pz/py*(y-vy)+vz;
-
-		if( z< Z_cap )
-		{
-			D = TMath::Sqrt((x-vx)*(x-vx)+(y-vy)*(y-vy)+(z-vz)*(z-vz));
-			l_gas = D;
-			l_Al1 = T_Al /TMath::Sqrt(thP*thP+phP*phP)*TMath::Sqrt(thP*thP+phP*phP+1) ; 
+		if( Z < Z_cap ){
+			l_gas = ( R/TMath::Abs(TMath::Sin(theta)) );
+			l_Al1 =( T_Al / TMath::Abs(TMath::Sin(theta)) );
 		}
-		else
-		{
-			sin_anglex=distance_tip/R*sin(angleR);
-			anglex = TMath::ASin(sin_anglex);
-			angleD = pi - angleR - anglex;
-			D=R/sin(angleR)*sin(angleD);
-
-			l_gas = D;
-			l_Al1 = Tip_Al /cos(anglex) ; 
+		else{
+			double R1 = R;
+			double R2 = R + Tip_Al;
+			l_gas = TMath::Sqrt( (R1*R1) - (Z_rel*Z_rel*sin2) ) - (Z_rel*TMath::Abs(TMath::Cos(theta))) ;
+			l_Al1 = TMath::Sqrt( (R2*R2) - (Z_rel*Z_rel*sin2) ) - TMath::Sqrt( (R1*R1) - (Z_rel*Z_rel*sin2) ) ; 
 		}
-
-		// Aluminum Scattering Chamber Exit Window
-		l_Al2 = 4.064E-4 ; // (i.e. 0.016")
-
-		// Air between Scattering Chamber and Spectrometer
-		l_Air = fAirLength ;
-		// 13.95" (RHRS), 10.62" (LHRS) for Spring 16
-		// 14.79" (RHRS), 15.23" (LHRS) for Fall 16		
-
-		// Kapton window at Spectrometer Entrance
-		l_Kap = 3.048E-4 ; // (i.e. 0.012")
 
 		// --------------------------------------------------------------
 		// Calculate energy loss with the parameters determined above
@@ -217,30 +192,16 @@ void Tri_Track_Eloss::CalcEloss( THaTrackInfo* trkifo )
 		if( fElectronMode ) {			
 			eloss_gas = MostProbEloss( fZ, beta, fZmed, fAmed, fDensity, l_gas ); // Gas Target
 			eloss_Al1 = MostProbEloss( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al1 ); // Aluminum Target Wall 
-			eloss_Al2 = MostProbEloss( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al2 ); // Aluminum Scattering Chamber Exit Window
-			eloss_Air = MostProbEloss( fZ, beta, Z_Air, A_Air, rho_Air , l_Air ); // Air between Scattering Chamber and HRS
-			eloss_Kap = MostProbEloss( fZ, beta, Z_Kap, A_Kap, rho_Kap , l_Kap ); // Kapton window at Spectrometer Entrance
 		}
 		else{
 			eloss_gas = MostProbEloss( fZ, beta, fZmed, fAmed, fDensity, l_gas ); // Gas Target
 			eloss_Al1 = MostProbEloss( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al1 ); // Aluminum Target Wall 
-			eloss_Al2 = MostProbEloss( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al2 ); // Aluminum Scattering Chamber Exit Window
-			eloss_Air = MostProbEloss( fZ, beta, Z_Air, A_Air, rho_Air , l_Air ); // Air between Scattering Chamber and HRS
-			eloss_Kap = MostProbEloss( fZ, beta, Z_Kap, A_Kap, rho_Kap , l_Kap ); // Kapton window at Spectrometer Entrance
 		}
+
 		// Calculate Total Eloss
 		fPathlength = l_gas; // Set as pathlength through gas...not really important
-		fEloss = eloss_gas + eloss_Al1 + eloss_Al2 + eloss_Air + eloss_Kap;
+		fEloss += eloss_gas + eloss_Al1;
 
-	}
-	// if this is not one of the gas cells
-	else{
-		if( fElectronMode ) {
-			fEloss = MostProbEloss( fZ, beta, fZmed, fAmed, fDensity, fPathlength );
-		}
-		else {
-			fEloss = MostProbEloss( fZ, beta, fZmed, fAmed, fDensity, fPathlength );
-		}
 	}
 
 }
