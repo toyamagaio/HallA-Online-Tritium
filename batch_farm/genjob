@@ -5,17 +5,25 @@
 # This script creates batch_krun and jscript_krun in batch_files directory
 # and submits the job to the farms
 #
-# Feb. 22, 2011 Zhihong Ye
-# --- Feb. 20 2018 updated for Triton
+# Feb 22   2011                                        Zhihong Ye
+# Feb 20   2018    updated for Triton                  Zhihong Ye
+# May/June 2018    More Tritium updates                Tyler Hague & Evan McClellan
+# July 6   2018    Friendliness/Portability Updates    Tyler Hague
 #
 
-home=/work/halla/triton/MARATHON_Replay/
-username=${USER}@jlab.org    # email which will be notify when the job is done
-#
-# Check whether the raw data are in cache or not
-#
-RAWDIR=/mss/halla/triton/raw/
-CACHEDIR=/cache/mss/halla/triton/raw/
+#Set up Directories.
+ANALYZERDIR=/work/halla/triton/MARATHON_Replay/analyzer1.6
+VOLATILEDIR=/volatile/halla/triton/Marathon_Rootfiles/
+RAWDIR=/cache/halla/triton/raw/
+DB_DIR=/work/halla/triton/tjhague/replay_tritium/replay/DB
+TAPEDIR=/mss/halla/triton/prod/marathon/
+REPLAYDIR=/work/halla/triton/tjhague/replay_tritium/replay/
+BATCHDIR=/work/halla/triton/tjhague/replay_tritium/batch_farm/
+PASS=pass1
+ROOTFILEFORM=tritium_
+RAWFILEFORM=triton_
+WORKFLOWFORM=h3_replay_
+
 
 #
 # Function to check if input is an integer
@@ -29,8 +37,7 @@ is_integer() {
 
 runfile=$1
 echo $runfile
-midfix=${runfile%.*}
-kin=${runfile%kin*}
+list_name=${runfile%.*}
 
 calib=0
 if [ "$2" == "calibration" ]; then
@@ -42,7 +49,7 @@ fi
 while read krun; do
 COUNT=0
 #If the data is already in the cahce, replay it
-if [ -e $CACHEDIR"/triton_"$krun".dat."$COUNT ]; then
+if [ -e $RAWDIR$RAWFILEFORM$krun".dat."$COUNT ]; then
 
 #
 # Verify if batch_files and .tmp.REPLAY exist
@@ -63,37 +70,37 @@ if [ -e $CACHEDIR"/triton_"$krun".dat."$COUNT ]; then
     rm -f batch_files/batch_${krun}
     echo "#!/bin/sh" >> batch_files/batch_${krun}
     echo "source /apps/root/6.10.02/setroot_CUE.bash" >>batch_files/batch_${krun}
-    echo "export ANALYZER=/work/halla/triton/MARATHON_Replay/analyzer1.6" >>batch_files/batch_${krun}
+    echo "export ANALYZER="$ANALYZERDIR >>batch_files/batch_${krun}
 
-    echo "export DB_DIR=/work/halla/triton/tjhague/replay_tritium/replay/DB" >>batch_files/batch_${krun}
+    echo "export DB_DIR="$DB_DIR >>batch_files/batch_${krun}
 
     echo "export LD_LIBRARY_PATH=\${ANALYZER}::\$ROOTSYS/lib:\${LD_LIBRARY_PATH}" >>batch_files/batch_${krun}
     echo "export PATH=\${ROOTSYS}/bin:\${ANALYZER}:\${PATH}" >>batch_files/batch_${krun}
     if [ $calib == 1 ]; then
       echo "export CALIBRATION_RUN=yes" >>batch_files/batch_${krun}
-      echo "export OUT_DIR=pass1_calibration" >>batch_files/batch_${krun}
+      echo "export OUT_DIR="$PASS"_calibration" >>batch_files/batch_${krun}
     else
-      echo "export OUT_DIR=pass1_fix" >>batch_files/batch_${krun}
+      echo "export OUT_DIR="$PASS >>batch_files/batch_${krun}
     fi
 
-    echo "cd /work/halla/triton/tjhague/replay_tritium/replay" >>batch_files/batch_${krun}
+    echo "cd "$REPLAYDIR >>batch_files/batch_${krun}
     if [ $calib == 1 ]; then
-      echo "rm -f /volatile/halla/triton/Marathon_Rootfiles/pass1_calibration/tritium_"${krun}"*.root" >>batch_files/batch_${krun}
+      echo "rm -f "$VOLATILEDIR$PASS"_calibration/"$ROOTFILEFORM${krun}"*.root" >>batch_files/batch_${krun}
     else
-      echo "rm -f /volatile/halla/triton/Marathon_Rootfiles/pass1_fix/tritium_"${krun}"*.root" >>batch_files/batch_${krun}
+      echo "rm -f "$VOLATILEDIR$PASS"/"$ROOTFILEFORM${krun}"*.root" >>batch_files/batch_${krun}
     fi
     echo " ">>batch_files/batch_${krun}
     echo "./fullReplay "${krun} >>batch_files/batch_${krun}
     if [ $calib == 1 ]; then
-      echo "cd /volatile/halla/triton/Marathon_Rootfiles/pass1_calibration/" >>batch_files/batch_${krun}
-      echo "for f in tritium_"${krun}"*.root; do" >>batch_files/batch_${krun}
-      echo "  swif outfile /volatile/halla/triton/Marathon_Rootfiles/pass1_calibration/\$f mss:/mss/halla/triton/prod/marathon/pass1_calibration/${midfix}/\$f" >>batch_files/batch_${krun}
+      echo "cd "$VOLATILEDIR$PASS"_calibration/" >>batch_files/batch_${krun}
+      echo "for f in "$ROOTFILEFORM${krun}"*.root; do" >>batch_files/batch_${krun}
+      echo "  swif outfile "$VOLATILEDIR$PASS"_calibration/\$f mss:"$TAPEDIR$PASS"_calibration/${list_name}/\$f" >>batch_files/batch_${krun}
       echo "  echo \"Found \"\$f" >>batch_files/batch_${krun}
       echo "done" >>batch_files/batch_${krun}
     else
-      echo "cd /volatile/halla/triton/Marathon_Rootfiles/pass1_fix/" >>batch_files/batch_${krun}
-      echo "for f in tritium_"${krun}"*.root; do" >>batch_files/batch_${krun}
-      echo "  swif outfile /volatile/halla/triton/Marathon_Rootfiles/pass1_fix/\$f mss:/mss/halla/triton/prod/marathon/pass1/${midfix}/\$f" >>batch_files/batch_${krun}
+      echo "cd "$VOLATILEDIR$PASS"/" >>batch_files/batch_${krun}
+      echo "for f in "$ROOTFILEFORM${krun}"*.root; do" >>batch_files/batch_${krun}
+      echo "  swif outfile "$VOLATILEDIR$PASS"/\$f mss:"$TAPEDIR$PASS"/${list_name}/\$f" >>batch_files/batch_${krun}
       echo "  echo \"Found \"\$f" >>batch_files/batch_${krun}
       echo "done" >>batch_files/batch_${krun}
     fi
@@ -108,8 +115,8 @@ if [ -e $CACHEDIR"/triton_"$krun".dat."$COUNT ]; then
 #
     rm -f batch_files/jscript_${krun}
     echo "PROJECT     triton" > batch_files/jscript_${krun}
-    echo "COMMAND     /work/halla/triton/tjhague/replay_tritium/batch_farm/batch_files/batch_"${krun} >>batch_files/jscript_${krun}
-    echo "JOBNAME     H3.${midfix}replay"${krun} >>batch_files/jscript_${krun}
+    echo "COMMAND     "$BATCHDIR"/batch_files/batch_"${krun} >>batch_files/jscript_${krun}
+    echo "JOBNAME     H3.${list_name}replay"${krun} >>batch_files/jscript_${krun}
     echo "TRACK       analysis" >> batch_files/jscript_${krun}
     echo "TIME        180" >>batch_files/jscript_${krun}
     echo "MEMORY      3000 MB" >>batch_files/jscript_${krun}
@@ -123,7 +130,11 @@ if [ -e $CACHEDIR"/triton_"$krun".dat."$COUNT ]; then
 ################################
 #    Submit job to the farm    #  
 ################################
-    swif add-jsub -workflow h3_${midfix}replay -create -script ./batch_files/jscript_${krun}
+    if [ $calib == 1 ]; then
+      swif add-jsub -workflow ${WORKFLOWFORM}${list_name}_calib -create -script ./batch_files/jscript_${krun}
+    else
+      swif add-jsub -workflow ${WORKFLOWFORM}${list_name} -create -script ./batch_files/jscript_${krun}
+    fi
 ################################
 ################################
 
