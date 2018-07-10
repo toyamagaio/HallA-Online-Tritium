@@ -7,6 +7,8 @@ Tyler Hague
 
 genjob - This file generates replay jobs based on an input file of run numbers. By default, it will output a 'skinny' replay, one with limited variables in the output definition file. If given the 'calibration' flag, it will output a file that has a large output definition file with many variables useful to performing a calibration task. To successfully use the calibration flag, your replay code must listen for an environmental variable named 'CALIBRATION_RUN'. This will be set to a string "yes" when the flag is received, otherwise it will be undefined. This flag should signal your replay code to use a different output definition file that defines what you would like in your calibration root files.
 
+The replay is done by calling a script called 'fullReplay' that accepts a single argument, the run number. This script should exist in the directory that the REPLAYDIR variable points to. The jobs will fail if this script does not exist.
+
 In order to use this program you will need to set a few variables located at the top of the code.
 
   ANALYZERDIR   - This variable should give a path to the installation of the Hall A Analyzer that you would like the replays to use.
