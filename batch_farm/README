@@ -1,0 +1,25 @@
+TRITIUM BATCH REPLAY JOB GENERATION
+-----------------------------------
+Code authors:
+Zhihong Ye
+Evan McClellan
+Tyler Hague
+
+genjob - This file generates replay jobs based on an input file of run numbers. By default, it will output a 'skinny' replay, one with limited variables in the output definition file. If given the 'calibration' flag, it will output a file that has a large output definition file with many variables useful to performing a calibration task. To successfully use the calibration flag, your replay code must listen for an environmental variable named 'CALIBRATION_RUN'. This will be set to a string "yes" when the flag is received, otherwise it will be undefined. This flag should signal your replay code to use a different output definition file that defines what you would like in your calibration root files.
+
+In order to use this program you will need to set a few variables located at the top of the code.
+
+  ANALYZERDIR   - This variable should give a path to the installation of the Hall A Analyzer that you would like the replays to use.
+  VOLATILEDIR   - This variable should give a path to the folder where the analyzer will output your root files.
+  RAWDIR        - This variable should give a path to the folder where your raw data is stored.
+  DB_DIR        - This variable should give a path to the folder that has your experiment's Analyzer calibration files.
+  TAPEDIR       - This variable should give a path to the folder on tape where you would like the root files to be stored.
+  REPLAYDIR     - This variable should give a path to the folder where your replay code resides.
+  BATCHDIR      - This variable should give a path to the folder where the genjob script resides.
+  PASS          - This variable is the name that you would like to give this set of replays. (e.g. pass1, pass2, test, etc.)
+  ROOTFILEFORM  - This variable is the name format that is used for your output root files with the run number truncated. (e.g. tritium_)
+  RAWFILEFORM   - This variable is the name format that is used for the raw data files with the run number truncated. (e.g. triton_)
+  WORKFLOWFORM  - This variable is the name format that is used for the workflow that the jobs will be added to. This name will have the name of the kinematic file (minus the file format) appended to it. It will also have '_calib' appended if the calibration option is given.
+
+You must manually start the workflow with: `swif run -workflow {workflow_name}`
+  usage: genjob runlist_file [calibration]
