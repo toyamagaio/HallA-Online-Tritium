@@ -114,7 +114,7 @@ Int_t Tri_ElossCorrection::ReadRunDatabase( const TDatime& date )
 	};
 	// Ignore pathlength if variable pathlength mode
 	if( fExtPathMode )
-		req[5].optional = kFALSE;
+		req[5].optional = kTRUE;
 
 	// Ignore database entries if parameter already set
 	DBRequest* item = req;
@@ -446,6 +446,85 @@ Double_t Tri_ElossCorrection:: ElossHadron( Int_t Z_hadron, Double_t beta,
 	Double_t eloss = HSTP * d_med * pathlength * 1e-3; // in GeV
 
 	return eloss;
+}
+
+//_____________________________________________________________________________
+Double_t Tri_ElossCorrection:: MostProbEloss( Int_t Z_part, Double_t beta,
+		Double_t z_med, Double_t a_med,
+		Double_t d_med,
+		Double_t pathlength )
+{
+	//-----------------------------------------------------------------------
+	//
+	// The implementation of this equation is based on:
+	// "Particle Detectors" (2nd edition) - C.Grupen, B.Shwartz
+	// Equation (1.22) 
+	// 
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	//
+	// Passed variables
+	//
+	//        Z_part     hadron charge 
+	//            beta     hadron velocity                (relative to light) 
+	//
+	//           z_med     effective charge of the medium
+	//           a_med     effective atomic mass          (AMU)
+	//           d_med     medium density                 (g/cm^3)
+	//      pathlength     flight path through medium     (m)
+	//
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	//
+	// Return value
+	//
+	//                     Most Probable Energy loss of electrons and hadrons (GeV)
+	//
+	//-----------------------------------------------------------------------
+
+	const double epsilon = 0.15355 ;        //MeV/(g/cm2) <-- 2*Pi*Na*re^2*me*c^2
+	const double me      = 0.000511;        //GeV
+
+	static const Double_t log100 = TMath::Log(1e2);
+
+	double dx_1  = d_med*pathlength*100.;   //g/cm2
+	double gamma = 1/TMath::Sqrt(1-beta*beta);
+
+	// ---------------------------
+	// Excitation Energy
+	double EXEN = ExEnerg(z_med,d_med); //eV
+	if( EXEN == 0.0 ) return 0.0;
+	// ---------------------------
+	// Reduced density correction
+	Double_t X,X0,X1,M,A,DENS;
+	Double_t PLAS = 28.8084 * TMath::Sqrt(d_med*z_med/a_med);
+	Double_t C = 2.0*TMath::Log(PLAS) - 2.0*TMath::Log(EXEN) - 1.0;
+	X = TMath::Log10(beta*gamma);
+	HaDensi(z_med,d_med,X0,X1,M);
+	
+	// Tabulated density consistency
+	if((X0+X1+M) == 0.0)
+		return 0.0;
+	A = -1.0 * ( C + log100*X0 ) / TMath::Power(X1-X0,M);
+	if(X<X0)
+		DENS = 0.0;
+	else if(X<X1)
+		DENS = log100*X + C + A*TMath::Power(X1-X,M);
+	else
+		DENS = log100*X + C;
+
+	double dens_corr = DENS;
+	// ---------------------------
+
+	EXEN = EXEN/1000./1000./1000.; //GeV
+
+	double coef = epsilon*Z_part*Z_part*z_med/a_med/beta/beta*dx_1;
+
+	double term1 = TMath::Log(2*me*pow(beta*gamma,2)/EXEN);
+	double term2 = TMath::Log(coef/EXEN/1000.)+0.2;
+	double term3 = -beta*beta;
+	double term4 = -dens_corr;
+
+	Double_t most_prob_eloss = coef*( term1 + term2 + term3 + term4 ); // in MeV
+	return most_prob_eloss* 1e-3; // in GeV;
 }
 
 //_____________________________________________________________________________

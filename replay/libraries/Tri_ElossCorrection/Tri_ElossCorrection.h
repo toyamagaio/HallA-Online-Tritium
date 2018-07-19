@@ -41,6 +41,10 @@ public:
 				 Double_t z_med, Double_t a_med, 
 				 Double_t d_med /* g/cm^3 */, 
 				 Double_t pathlength /* m */ );
+  static  Double_t  MostProbEloss( Int_t Z_part, Double_t beta,
+                		   Double_t z_med, Double_t a_med,
+                		   Double_t d_med /* g/cm^3 */,
+               			   Double_t pathlength /* m */);
 
 protected:
 
@@ -59,7 +63,7 @@ protected:
   Double_t           fScale;       // Scale factor for variable pathlength calc
 
   Bool_t             fTestMode;    // If true, use fixed value for fEloss
-  Bool_t             fElectronMode;// Particle is electron or positron
+  Bool_t             fElectronMode;// Particle is electron or hadron
   Bool_t             fExtPathMode; // If true, obtain pathlength from vertex module
   TString            fInputName;   // Name of input module
   TString            fVertexName;  // Name of vertex module for var pathlength, if any

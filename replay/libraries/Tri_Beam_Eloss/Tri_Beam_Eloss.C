@@ -99,18 +99,18 @@ void Tri_Beam_Eloss::CalcEloss( THaBeamInfo* beamifo )
 			// https://logbooks.jlab.org/files/2018/01/3514205/TGT-RPT-17-007.pdf
 			// ---------------------------------------------------------------------------------------------
 
-			eloss_Al  = ElossElectron( beta, Z_Al , A_Al , rho_Al  , l_Al        ); // Aluminum Entrance Window
-			eloss_gas = ElossElectron( beta, fZmed, fAmed, fDensity, fPathlength ); // Gas Target
+			eloss_Al  = MostProbEloss( fZ, beta, Z_Al , A_Al , rho_Al  , l_Al        ); // Aluminum Entrance Window
+			eloss_gas = MostProbEloss( fZ, beta, fZmed, fAmed, fDensity, fPathlength ); // Gas Target
 
 			fEloss = eloss_Al + eloss_gas ;
 
 		} else {
-			fEloss = ElossElectron( beta, fZmed, fAmed, fDensity, fPathlength );
+			fEloss = MostProbEloss( fZ, beta, fZmed, fAmed, fDensity, fPathlength );
 		}
 
 	}
 	else {
-		fEloss = ElossHadron( fZ, beta, fZmed, fAmed, fDensity, fPathlength );
+		fEloss = MostProbEloss( fZ, beta, fZmed, fAmed, fDensity, fPathlength );
 	}
 
 	// ----------------------------------------------------------------------------	
@@ -124,7 +124,7 @@ void Tri_Beam_Eloss::CalcEloss( THaBeamInfo* beamifo )
         Double_t rho_Be = 1.848    ; //g/cc
 	Double_t l_Be   = 0.2003E-3; // m
 	
-	eloss_Be = ElossElectron( beta, Z_Be, A_Be, rho_Be, l_Be ); // Beryllium Window Energy Loss
+	eloss_Be = MostProbEloss( fZ, beta, Z_Be, A_Be, rho_Be, l_Be ); // Beryllium Window Energy Loss
 	fEloss += eloss_Be;
 	// ----------------------------------------------------------------------------
 }

@@ -27,6 +27,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 	Bool_t bBeam     = kTRUE  ;
 	Bool_t bPhysics  = kTRUE  ;
 	Bool_t bOldTrack = kFALSE ;
+	Bool_t bEloss    = kTRUE  ;
 	// ---------------------------
 	TString rootname;
 	if(OnlineReplay) rootname = "%s/tritium_online_%d.root";
@@ -153,10 +154,13 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		// LHRS Beam
 		//==================================
 
-		TriFadcRasteredBeam* Lrb = new TriFadcRasteredBeam("Lrb", "Rastered beam to L-HRS");
+		THaUnRasteredBeam * Lurb = new THaUnRasteredBeam("Lurb","Unrastered beam to LHRS");
+		gHaApps->Add(Lurb);
+
+		TriFadcRasteredBeam* Lrb = new TriFadcRasteredBeam("Lrb", "Rastered beam to LHRS");
 		gHaApps->Add(Lrb);
 
-		THaRasteredBeam* FbusLrb = new THaRasteredBeam("FbusLrb", "Fastbus Rastered beam to L-HRS");
+		THaRasteredBeam* FbusLrb = new THaRasteredBeam("FbusLrb", "Fastbus Rastered beam to LHRS");
 		FbusLrb->AddDetector(new THaRaster("Raster2", "Downstream Raster"));
 		FbusLrb->AddDetector(new THaBPM   ("BPMA", "First BPM"));
 		FbusLrb->AddDetector(new THaBPM   ("BPMB", "Second BPM"));
@@ -166,10 +170,13 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		// RHRS Beam
 		//==================================	
 
-		TriFadcRasteredBeam* Rrb = new TriFadcRasteredBeam("Rrb", "Rastered beam to the R-HRS");
+		THaUnRasteredBeam * Rurb = new THaUnRasteredBeam("Rurb","Unrastered beam to RHRS");
+                gHaApps->Add(Rurb);
+
+		TriFadcRasteredBeam* Rrb = new TriFadcRasteredBeam("Rrb", "Rastered beam to the RHRS");
 		gHaApps->Add(Rrb);
 
-		THaRasteredBeam* FbusRrb = new THaRasteredBeam("FbusRrb", "Fastbus Rastered beam to R-HRS");
+		THaRasteredBeam* FbusRrb = new THaRasteredBeam("FbusRrb", "Fastbus Rastered beam to RHRS");
 		FbusRrb->AddDetector(new THaRaster("Raster2", "Downstream Raster"));
 		FbusRrb->AddDetector(new THaBPM   ("BPMA", "First BPM"));
 		FbusRrb->AddDetector(new THaBPM   ("BPMB", "Second BPM"));
@@ -189,15 +196,18 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		Double_t mass_prot= 0.938         ; //GeV proton mass
 
 		string word[5],line;
+		Double_t Z, A, density;
 
 		// File to look up the target enconder position to determine the target for this run
-		TString filename = Form("/adaqfs/home/adaq/epics/runfiles_tritium_Coinc/Start_of_Run_%d.epics",runnumber);
+		//TString filename = Form("/adaqfs/home/adaq/epics/runfiles_tritium_Coinc/Start_of_Run_%d.epics",runnumber);
+		TString filename = Form("../runfiles_tritium_Coinc/Start_of_Run_%d.epics",runnumber);
 
 		ifstream infile;
 		infile.open(filename);
 		double pos=0       ;
 		double t2 =33106235;
 		double d2 =29367355;
+		double h2 =25610043;
 		double he3=21875520;
 
 		while(getline(infile,line)){
@@ -206,9 +216,39 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 			if(word[0]=="Encoder" && word[1]=="Position"){
 				str>>word[2]>>word[3];
 				pos = atof(word[3].c_str()); 
-				if     (abs(pos-t2 )<50) mass_tg=mass_H3 /3.0; // "proton mass"
-				else if(abs(pos-d2 )<50) mass_tg=mass_H2 /2.0;
-				else if(abs(pos-he3)<50) mass_tg=mass_He3/3.0;
+
+				// Tritium target
+				if     (abs(pos-t2 )<100){
+					mass_tg = mass_H3  ;
+					Z       = 1.;
+                                        A       = 3.;
+                                        density = 0.003065; // g/cm3
+				}
+				// Deuterium target
+				else if(abs(pos-d2 )<100){
+					mass_tg = mass_H2  ;
+					Z       = 1;
+					A       = 2;
+					density = 0.005686; // g/cm3
+				}
+				// Helium-3 target
+				else if(abs(pos-he3)<100){
+					mass_tg = mass_He3 ;
+					Z       = 2.;
+                                        A       = 3.;
+                                        density = 0.002; // g/cm3
+				}
+				// Hydrogen target
+				else if(abs(pos-h2 )<100){
+					mass_tg = mass_prot;
+					Z       = 1.;
+                                        A       = 1.;
+                                        density = 0.002832; // g/cm3
+				}
+				else{
+					bEloss=kFALSE;
+					cout << "WARNING: WON'T BE DOING ENERGY LOSS CORRECTIONS" << endl;
+				}
 				break;
 			}
 		}
@@ -216,15 +256,15 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		//==================================
 		// LHRS
 		//==================================
-		THaPhysicsModule *Lgold   = new THaGoldenTrack  ("L.gold"   ,"HRS-L Golden Track"                     ,"L"                 );
-		THaPhysicsModule *Lvdceff = new TriVDCeff       ("L.vdceff" ,"Left vdc efficiency"                                         );
-		THaPhysicsModule *EKL     = new THaPrimaryKine  ("EKL"      ,"Electron kinematics in HRS-L"	      ,"L"   ,"ib" ,mass_tg);
-		THaPhysicsModule *EKLc    = new THaPrimaryKine  ("EKLc"     ,"Corrected Electron kinematics in HRS-L" ,"L"   ,"Lrb",mass_tg);
-		THaReactionPoint *rpl     = new THaReactionPoint("rpl"      ,"Reaction vertex for HRS-L"              ,"L"   ,"Lrb"        );
-		THaExtTarCor     *exL     = new THaExtTarCor    ("exL"      ,"Corrected for extended target, HRS-L"   ,"L"   ,"rpl"        );
-		THaPhysicsModule *EKLx    = new THaPrimaryKine  ("EKLx"     ,"Better Corrected Electron kinem in LHRS","exL" ,"Lrb",mass_tg);
-		THaPhysicsModule *BCML    = new TriBCM          ("LeftBCM"  ,"Beam Current Monitors"                  ,"Left",""   ,0      );
-		THaPhysicsModule *BCMevL  = new TriBCM          ("LeftBCMev","Beam Current Monitors"                  ,"Left","ev" ,0      );
+		THaPhysicsModule *Lgold   = new THaGoldenTrack  ("L.gold"   ,"LHRS Golden Track"                       ,"L"                 );
+		THaPhysicsModule *Lvdceff = new TriVDCeff       ("L.vdceff" ,"Left vdc efficiency"                                          );
+		THaPhysicsModule *EKL     = new THaPrimaryKine  ("EKL"      ,"Electron kinematics in LHRS" 	       ,"L"   ,"ib" ,mass_tg);
+		THaPhysicsModule *EKLc    = new THaPrimaryKine  ("EKLc"     ,"Raster-Corrected Electron kinem. in LHRS","L"   ,"Lrb",mass_tg);
+		THaReactionPoint *rpl     = new THaReactionPoint("rpl"      ,"Reaction vertex for LHRS"                ,"L"   ,"Lrb"        );
+		THaExtTarCor     *exL     = new THaExtTarCor    ("exL"      ,"Corrected for extended target, LHRS"     ,"L"   ,"rpl"        );
+		THaPhysicsModule *EKLx    = new THaPrimaryKine  ("EKLx"     ,"Better Corrected Electron kinem in LHRS" ,"exL" ,"Lrb",mass_tg);
+		THaPhysicsModule *BCML    = new TriBCM          ("LeftBCM"  ,"Beam Current Monitors"                   ,"Left",""   ,0      );
+		THaPhysicsModule *BCMevL  = new TriBCM          ("LeftBCMev","Beam Current Monitors"                   ,"Left","ev" ,0      );
 
 		gHaPhysics->Add(Lgold  );
 		gHaPhysics->Add(Lvdceff);
@@ -239,13 +279,13 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		//==================================
 		// RHRS
 		//==================================
-		THaPhysicsModule *Rgold   = new THaGoldenTrack  ("R.gold"    ,"HRS-R Golden Track"                     ,"R"                     );
+		THaPhysicsModule *Rgold   = new THaGoldenTrack  ("R.gold"    ,"RHRS Golden Track"                      ,"R"                     );
 		THaPhysicsModule *Rvdceff = new TriVDCeff       ("R.vdceff"  ,"Reft vdc efficiency"                                             );
-		THaPhysicsModule *EKR     = new THaSecondaryKine("EKR"       ,"Proton kinematics in HRS-R"             ,"R"    ,"EKL" ,mass_prot);
-		THaPhysicsModule *EKRc    = new THaSecondaryKine("EKRc"      ,"Corrected Proton kinematics in HRS-R"   ,"R"    ,"EKLc",mass_prot);
-		THaReactionPoint *rpr     = new THaReactionPoint("rpr"       ,"Reaction vertex for HRS-R"              ,"R"    ,"Lrb"           );
-		THaExtTarCor     *exR     = new THaExtTarCor    ("exR"       ,"Corrected for extended target, HRS-R"   ,"R"    ,"rpr"           );
-		THaPhysicsModule *EKRx    = new THaSecondaryKine("EKRx"      ,"Better Corrected Proton kinem in RHRS"  ,"R"    ,"EKLx",mass_prot);
+		THaPhysicsModule *EKR     = new THaSecondaryKine("EKR"       ,"Proton kinematics in RHRS"              ,"R"    ,"EKL" ,mass_prot);
+		THaPhysicsModule *EKRc    = new THaSecondaryKine("EKRc"      ,"Raster-Corrected Proton kinem. in RHRS" ,"R"    ,"EKLc",mass_prot);
+		THaReactionPoint *rpr     = new THaReactionPoint("rpr"       ,"Reaction vertex for RHRS"               ,"R"    ,"Lrb"           );
+		THaExtTarCor     *exR     = new THaExtTarCor    ("exR"       ,"Corrected for extended target, RHRS"    ,"R"    ,"rpl"           );
+		THaPhysicsModule *EKRx    = new THaSecondaryKine("EKRx"      ,"Better Corrected Proton kinem in RHRS"  ,"exR"  ,"EKLx",mass_prot);
 		THaPhysicsModule *BCMR    = new TriBCM          ("RightBCM"  ,"Beam Current Monitors"                  ,"Right",""    ,0        );
 		THaPhysicsModule *BCMevR  = new TriBCM          ("RightBCMev","Beam Current Monitors"                  ,"Right","ev"  ,0        );
 
@@ -258,6 +298,50 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		gHaPhysics->Add(EKRx   );
 		gHaPhysics->Add(BCMR   );
 		gHaPhysics->Add(BCMevR );
+
+		//=====================================================================================================================
+		// Energy Loss
+		if(bEloss){
+			// -------------------------------
+			// Beam Energy Loss
+			Double_t zbeam_off = -0.125 ; //For a target centered at z=0, this should equal to the targetlength/2. (in m) 
+		
+			Tri_Beam_Eloss *Elb = new Tri_Beam_Eloss("Elb","Beam Corrected for Energy Loss","Lrb","rpl",zbeam_off);	
+			Elb->SetDebug(1);
+			Elb->SetMedium(Z,A,density);
+			gHaPhysics->Add(Elb);
+
+			// -------------------------------
+			// Track Energy Loss
+			Double_t targ_length = 0.25 ; // In meters. Set to 25 cm for Tritium gas target cells
+			Double_t ztrack_off  = 0.   ; // For a target centered at z=0, this should equal to 0. (in m)
+
+			// Pathlength through air between scattering chamber exit and spectrometer entrance
+			// I obtained these numbers from Gmp (see their replay script)
+			// Set to 0.3543 m for RHRS and 0.2697 m for LHRS for Spring 16.
+			// Set to 0.3757 m for RHRS and 0.3868 m for LHRS for Fall 16.
+			// Set to 0.8160   m for both spectrometers according to Jesse
+                        Double_t air_lengthL = 0.8160; // In meters.
+                        Double_t air_lengthR = 0.8160; // In meters.
+
+			Tri_Track_Eloss *EltL = new Tri_Track_Eloss("EltL","Track Corrected for Energy Loss","exL","rpl",targ_length,ztrack_off,air_lengthL);
+                        EltL->SetDebug(1);
+                        EltL->SetMedium(Z,A,density);
+                        gHaPhysics->Add(EltL);
+
+			Tri_Track_Eloss *EltR = new Tri_Track_Eloss("EltR","Track Corrected for Energy Loss","exR","rpl",targ_length,ztrack_off,air_lengthR,0.938);
+                        EltR->SetDebug(1);
+                        EltR->SetMedium(Z,A,density);
+                        gHaPhysics->Add(EltR);
+
+			// -------------------------------
+			THaPhysicsModule *EKLxe = new THaPrimaryKine  ("EKLxe","Electron kinem in LHRS corrected also for eloss","EltL" ,"Elb",mass_tg);
+                        gHaPhysics->Add(EKLxe);
+
+			THaPhysicsModule *EKRxe = new THaSecondaryKine("EKRxe","Proton kinem in RHRS corrected also for eloss","EltR" ,"EKLxe",mass_prot);
+			gHaPhysics->Add(EKRxe);
+
+		}
 
 	}
 
@@ -319,11 +403,11 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		gSystem->Exec(Form("ln -s %scoinc_%d.pdf %scoinc_latest.pdf"                     ,path_to_plots,runnumber       ,SUM_DIR                ));    
 		gSystem->Exec(Form("ln -sf %scoinc_%d.pdf %scoinc_latest.pdf"                    ,path_to_plots,runnumber       ,path_to_plots          ));
 
-		gSystem->Exec(Form("%sonline -P -f %s -r %d"                                     ,GUI_DIR      ,CONFIGCOINCPHYS ,runnumber            ));
-                gSystem->Exec(Form("mv %stemp_%d.pdf %scoinc_physics_%d.pdf"                     ,SUM_DIR      ,runnumber       ,path_to_plots,runnumber));
-                gSystem->Exec(Form("unlink %scoinc_physics_latest.pdf"                           ,SUM_DIR                                               ));
-                gSystem->Exec(Form("ln -s %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"     ,path_to_plots,runnumber       ,SUM_DIR                ));    
-                gSystem->Exec(Form("ln -sf %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"    ,path_to_plots,runnumber       ,path_to_plots          ));
+		gSystem->Exec(Form("%sonline -P -f %s -r %d"                                     ,GUI_DIR      ,CONFIGCOINCPHYS ,runnumber              ));
+		gSystem->Exec(Form("mv %stemp_%d.pdf %scoinc_physics_%d.pdf"                     ,SUM_DIR      ,runnumber       ,path_to_plots,runnumber));
+		gSystem->Exec(Form("unlink %scoinc_physics_latest.pdf"                           ,SUM_DIR                                               ));
+		gSystem->Exec(Form("ln -s %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"     ,path_to_plots,runnumber       ,SUM_DIR                ));    
+		gSystem->Exec(Form("ln -sf %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"    ,path_to_plots,runnumber       ,path_to_plots          ));
 	}
 
 	exit(0);
