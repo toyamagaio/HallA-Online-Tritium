@@ -39,6 +39,7 @@ replay/onlineGUI64/*.pdf
 replay/scripts/SPOT/**/*.pdf
 replay/scripts/Time_check/*.pdf
 replay/scripts/Runlist/Test*
+replay/scripts/Runlist/test*
 replay/DB/*
 replay/RootFiles
 replay/RootFiles_chafs
