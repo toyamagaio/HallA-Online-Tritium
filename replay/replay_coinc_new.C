@@ -154,7 +154,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		// LHRS Beam
 		//==================================
 
-		THaUnRasteredBeam * Lurb = new THaUnRasteredBeam("Lurb","Unrastered beam to LHRS");
+		TriFadcUnRasteredBeam * Lurb = new TriFadcUnRasteredBeam("Lurb","Unrastered beam to LHRS");
 		gHaApps->Add(Lurb);
 
 		TriFadcRasteredBeam* Lrb = new TriFadcRasteredBeam("Lrb", "Rastered beam to LHRS");
@@ -170,7 +170,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		// RHRS Beam
 		//==================================	
 
-		THaUnRasteredBeam * Rurb = new THaUnRasteredBeam("Rurb","Unrastered beam to RHRS");
+		TriFadcUnRasteredBeam * Rurb = new TriFadcUnRasteredBeam("Rurb","Unrastered beam to RHRS");
                 gHaApps->Add(Rurb);
 
 		TriFadcRasteredBeam* Rrb = new TriFadcRasteredBeam("Rrb", "Rastered beam to the RHRS");
