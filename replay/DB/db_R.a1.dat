@@ -1,7 +1,7 @@
 --------[ 2018-08-08 00:00:00 -0500 ]
 R.a1.npmt = 24
---Crate,Slot,1st,Last chans,Beg Cher chan --
---for A1, 0-11 is Left PMTs, 12-23 is Right PMTs --
+#--Crate,Slot,1st,Last chans,Beg Cher chan --
+#--for A1, 0-11 is Right PMTs, 12-23 is Left PMTs --
 R.a1.detmap = 
   20  19  0  15  1  250
   20  18  0  7  17  250
