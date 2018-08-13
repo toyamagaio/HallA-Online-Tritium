@@ -34,7 +34,7 @@ void replay_tritium(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t Qu
 
   
   //Enable modules
-  Bool_t bScaler=kTRUE;
+  Bool_t bScaler=kFALSE;
   Bool_t bHelicity=kFALSE;
   Bool_t bBeam=kTRUE;
   Bool_t bPhysics=kTRUE;
@@ -74,7 +74,10 @@ void replay_tritium(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t Qu
     HRSR->AddDetector( new TriFadcScin("s2", "S2 Scintillator - FADC" ));
     HRSR->AddDetector( new THaShower("ps", "Pre-shower pion rej." ));
     HRSR->AddDetector( new THaShower("sh", "Show pion rej." ));
-    
+    HRSR->AddDetector( new TriFadcCherenkov("a1", "Aerogel counter - FADC" ));
+    HRSR->AddDetector( new TriFadcCherenkov("a2", "Aerogel counter - FADC" ));
+
+
     THaHRS* FbusHRSR = new THaHRS("FbusR", "Fastbus RHRS Readout");
     FbusHRSR->AutoStandardDetectors(kFALSE);
     gHaApps->Add(FbusHRSR);
