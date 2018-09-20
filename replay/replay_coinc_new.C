@@ -27,7 +27,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 	Bool_t bBeam     = kTRUE  ;
 	Bool_t bPhysics  = kTRUE  ;
 	Bool_t bOldTrack = kFALSE ;
-	Bool_t bEloss    = kTRUE  ;
+	Bool_t bEloss    = kFALSE  ;
 	// ---------------------------
 	TString rootname;
 	if(OnlineReplay) rootname = "%s/tritium_online_%d.root";
