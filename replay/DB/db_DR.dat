@@ -74,15 +74,15 @@ DR.multi =
          rrawt15            2      11      62
          rrawt16            2      11      63
 #copy of rrawt9-16 inputs with a more descriptive name 
-         rtL1Aremote        2      11      56
-         rtClockRHRS        2      11      57
+         rtClockRHRS        2      11      54
          rtClockLHRS        2      11      55
+         rtL1Aremote        2      11      56
+         rtL1A              2      11      57
          rtS2L              2      11      58
          rtS2R              2      11      59
          rtS0orS2           2      11      60
          rtadcgate          2      11      61
-	 rtRFtime 	    2      11      62
-         rtL1A              2      11      63
+	 rtRFtime 	    2      11      63
          rtGCSum            2      11      42
          rtS0coinc          2      11      45
          rtL1A_copy 	    2      11      46
