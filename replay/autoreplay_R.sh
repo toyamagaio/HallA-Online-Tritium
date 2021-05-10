@@ -68,6 +68,7 @@ if [ $pc == "aonl3.jlab.org" ]; then  # to avoid repeating running
     # while [ $waittime -lt 144 ]; do  # if no new datafile for 24 hours, stop
     while [ $thisrun -le $runnum ]; do
 	if [ $thisrun -lt $runnum ]; then
+            python scripts/mysql/log2db_aonl.py  $thisrun       
 	
 	    if [[ $(find ${RAWDIR}/triton_${thisrun}.dat.0 -type f -size +10000000c 2>/dev/null) ]]; then  # require rawdata > 10 Mbytes
 		echo  ==Found ${RAWDIR}/triton_${thisrun}.dat.0
@@ -82,7 +83,8 @@ if [ $pc == "aonl3.jlab.org" ]; then  # to avoid repeating running
 		   # running the wiki runlist script to auto add thisrun to the wiki runlist
 		   cd scripts
 		   #./wiki_runlist $thisrun
-		   analyzer -q -b "sql_update.C($thisrun)" >> ${LOGDIR}/${thisrun}_info.log
+		   analyzer -q -b "electron_counts.C($thisrun)" >> ${LOGDIR}/${thisrun}_info.log
+		   analyzer -q -b "electron_counts.C($thisrun,150)" >> ${LOGDIR}/${thisrun}_info.log
 		   cd ..
 		fi
 		
@@ -94,12 +96,12 @@ if [ $pc == "aonl3.jlab.org" ]; then  # to avoid repeating running
 	    let thisrun=thisrun+1
 	else
 	    if [ $(($waittime % 10)) -eq 0 ]; then
-	    echo Run ${thisrun} is not completed.  Will check again after 1 minutes.
+	    echo Run ${thisrun} is not completed.  Will check again after 2 minutes.
 	    fi
 	    if [ $(($waittime % 60)) -eq 0 ]; then
 		echo **If you want to terminate this program, do ctrl+z, kill %
 	    fi
-	    sleep 1m #wait for 10 minutes
+	    sleep 2m #wait for 10 minutes
 	    waittime=$(($waittime + 1))
 	    if [ $waittime -gt 1440 ]; then
 		echo ====no new datafile in the past 24 hours, STOP========

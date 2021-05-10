@@ -149,7 +149,10 @@ Int_t TriFadcCherenkov::ReadDatabase( const TDatime& date )
   memset( fPed, 0, nval*sizeof(fPed[0]) );
 
   fNPED = 1; //number of samples included in FADC pedestal sum
-  fWin = 1;  //number of samples included in FADC integration
+  fNSA = 1;  //number of integration samples after threshold crossing
+  fNSB = 1;  //number of integration samples before threshold crossing
+  fWin = 1;  //total number of sample in FADC window
+  fTFlag = 1;  //Threshold On: 1, Off: 0
 
   for( UInt_t i=0; i<nval; ++i ) { fGain[i] = 1.0; }
 
@@ -159,7 +162,10 @@ Int_t TriFadcCherenkov::ReadDatabase( const TDatime& date )
     { "adc.gains",        fGain,        kFloat, nval, 1 },
     //    { "tdc.res",          &fTdc2T,      kDouble },
     { "NPED",             &fNPED,        kInt},
+    { "NSA",              &fNSA,         kInt},
+    { "NSB",              &fNSB,         kInt},
     { "Win",              &fWin,         kInt},
+    { "TFlag",            &fTFlag,       kInt},
     { 0 }
   };
   err = LoadDB( file, date, calib_request, fPrefix );
@@ -297,6 +303,7 @@ Int_t TriFadcCherenkov::Decode( const THaEvData& evdata )
       Int_t data;
       Int_t ftime=0;
       Int_t fpeak=0;
+      Float_t tempPed = fPed[k];             // Dont overwrite DB pedestal value!!! -- REM -- 2018-08-21
       if(adc){
 	 data = evdata.GetData(kPulseIntegral,d->crate,d->slot,chan,0);
          ftime = evdata.GetData(kPulseTime,d->crate,d->slot,chan,0);
@@ -305,7 +312,6 @@ Int_t TriFadcCherenkov::Decode( const THaEvData& evdata )
       else{ 
 	     fNhits[k]=evdata.GetNumHits(d->crate, d->slot, chan);     
              data = evdata.GetData( d->crate, d->slot, chan, fNhits[k]-1 );
-
 	  }
 
       if(adc){
@@ -313,10 +319,23 @@ Int_t TriFadcCherenkov::Decode( const THaEvData& evdata )
                foverflow[k] = fFADC->GetOverflowBit(chan,0);
                funderflow[k] = fFADC->GetUnderflowBit(chan,0);
                fpedq[k] = fFADC->GetPedestalQuality(chan,0);
+        //       if(foverflow[k]+funderflow[k]+fpedq[k] != 0) printf("Bad Quality: (over, under, ped)= (%i,%i,%i)\n",foverflow[k],funderflow[k],fpedq[k]);
           }
           if(fpedq[k]==0)
-           fPed[k]=fWin*(static_cast<Double_t>(evdata.GetData(kPulsePedestal,d->crate,d->slot,chan,0)))/fNPED;
-
+          {
+            if(fTFlag == 1)
+            {
+              tempPed=(fNSA+fNSB)*(static_cast<Double_t>(evdata.GetData(kPulsePedestal,d->crate,d->slot,chan,0)))/fNPED;
+            }
+            else
+            {
+              tempPed=fWin*(static_cast<Double_t>(evdata.GetData(kPulsePedestal,d->crate,d->slot,chan,0)))/fNPED;
+            }
+          }
+   //       else
+   //       {
+   //         printf("\nWARNING: BAD FADC PEDESTAL\n");
+   //       }
       }
       
       // Copy the data to the local variables.
@@ -325,7 +344,7 @@ Int_t TriFadcCherenkov::Decode( const THaEvData& evdata )
         fPeak[k] = static_cast<Float_t>(fpeak);
         fT_FADC[k]=static_cast<Float_t>(ftime);
         fT_FADC_c[k]=fT_FADC[k]*0.0625;
-	fA_p[k] = data - fPed[k];
+	fA_p[k] = data - tempPed;
 	fA_c[k] = fA_p[k] * fGain[k];
 	// only add channels with signals to the sums
 	if( fA_p[k] > 0.0 )
